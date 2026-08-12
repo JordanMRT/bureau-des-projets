@@ -1,696 +1,349 @@
-<html><head><style>
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,700;9..144,900&family=DM+Mono:wght@400;500&display=swap');
-*{box-sizing:border-box;margin:0;padding:0}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>bureau des projets</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Advent+Pro:ital,wght@0,100..900;1,100..900&family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #fdf3df;
+    --text: #3a2a17;
+    --muted: #8a6d47;
+    --border: #3a2a17;
+    --border-soft: #d8b788;
+    --card-bg: #f8e6bf;
+    --accent: #d9711f;
+    --accent-visited: #b8552f;
+    --dot: #6f9c3e;
+    --h1: "IBM Plex Mono", monospace;
+    --display : "Advent Pro"
+  }
 
-#sc{
-  width:100%;height:100%;position:relative;overflow:hidden;
-  font-family:'DM Mono',monospace;
-  background:#D4C8B8;
-  transition:background 2s ease;
-}
-#sc.night{ background:#1E1A2E }
+  body{
+    margin:0;
+    padding:24px 16px 60px;
+    background:var(--bg);
+    color:var(--text);
+    font-family: var(--display), serif;
+    font-size: 22px;
+    font-weight: 500;
+    line-height:1.5;
+  }
+  a{ color:var(--accent); }
+  a:visited{ color:var(--accent-visited); }
 
-/* WALL */
-#wall{
-  position:absolute;inset:0 0 168px 0;
-  background:#D9CEBF;
-  transition:background 2s ease;
-}
-#sc.night #wall{ background: #2b2011; }
+  .wrap{
+    max-width:900px;
+    margin:0 auto;
+    display:grid;
+    grid-template-columns:1fr 220px;
+    gap:36px;
+    align-items:start;
+  }
 
-/* subtle grid texture */
-#wallTex{
-  position:absolute;inset:0 0 168px 0;
-  background-image:
-    repeating-linear-gradient(90deg,rgba(0,0,0,.018) 0,rgba(0,0,0,.018) 1px,transparent 1px,transparent 44px),
-    repeating-linear-gradient(0deg,rgba(0,0,0,.014) 0,rgba(0,0,0,.014) 1px,transparent 1px,transparent 44px);
-  pointer-events:none;
-  transition:opacity 2s;
-}
-#sc.night #wallTex{ opacity:.15 }
+  @media (max-width:680px){
+    .wrap{ grid-template-columns:1fr; }
+    aside{ order:2; }
+    main{ order:1; }
+  }
 
-/* FLOOR */
-#floor{
-  position:absolute;bottom:0;left:0;right:0;height:172px;
-  background:#C2A882;
-  transition:background 2s ease;
-}
-#sc.night #floor{ background: #42392c;}
-
-#floorPlanks{
-  position:absolute;bottom:0;left:0;right:0;height:172px;
-  background-image:repeating-linear-gradient(90deg,transparent,transparent 119px,rgba(0,0,0,.06) 119px,rgba(0,0,0,.06) 120px);
-  pointer-events:none;
-}
-#baseboard{
-  position:absolute;bottom:168px;left:0;right:0;height:7px;
-  background:#A08060;
-  transition:background 2s;
-}
-#sc.night #baseboard{     background: #1a0f05; }
-
-/* ── WINDOW ── */
-#winWrap{
-      position: absolute;
-    top: 28px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 560px;
-    height: 345px;
-    z-index: 3;
-}
-#winSky{
-  position:absolute;inset:0;
-  background:linear-gradient(180deg,#7EC8E3 0%,#B8DFF0 55%,#D8F0FA 100%);
-  overflow:hidden;
-  transition:background 2s ease;
-}
-#sc.night #winSky{
-  background:linear-gradient(180deg,#1A0E2E 0%,#2A1850 40%,#1C2444 100%);
-}
-
-/* clouds container — scrolls horizontally */
-#cloudsTrack{
-  position:absolute;top:0;left:0;width:600px;height:100%;
-  animation:cloudScroll 28s linear infinite;
-}
-@keyframes cloudScroll{
-  from{transform:translateX(0)}
-  to{transform:translateX(-300px)}
-}
-.cld{
-  position:absolute;background:rgba(255,255,255,.88);border-radius:20px;
-  transition:opacity 2s;
-}
-#sc.night .cld{opacity:0}
-
-/* stars */
-.star{
-  position:absolute;background:#fff;border-radius:50%;
-  opacity:0;transition:opacity 2.2s;
-}
-#sc.night .star{opacity:.9}
-
-/* moon */
-#moon{
-  position:absolute;top:18px;right:22px;
-  width:26px;height:26px;border-radius:50%;
-  background:#EDE8C0;
-  box-shadow:0 0 12px 4px rgba(237,232,192,.35);
-  opacity:0;transition:opacity 2.2s;
-}
-#sc.night #moon{opacity:1}
-
-/* window frame */
-#winFrame{
-  position:absolute;inset:0;
-  border:7px solid #8B6B4A;pointer-events:none;z-index:1;
-}
-#winFrame::before{
-  content:'';position:absolute;top:50%;left:0;right:0;
-  height:6px;background:#8B6B4A;transform:translateY(-50%);
-}
-#winFrame::after{
-  content:'';position:absolute;left:50%;top:0;bottom:0;
-  width:6px;background:#8B6B4A;transform:translateX(-50%);
-}
-/* sill */
-#winSill{
-  position: absolute;
-    top: 371px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 570px;
-    height: 10px;
-    background: #7A5C3A;
-    border-radius: 0 0 3px 3px;
-    z-index: 3;
-    transition: background 2s;
-  z-index:3;transition:background 2s;
-}
-#sc.night #winSill{background:#3A2E50}
-
-/* curtains */
-#curtL,#curtR{
-  position: absolute;
-    top: 27px;
-    width: 55px;
-    border-radius: 2px;
-    z-index: 4;
-    transition: filter 2s;
-}
-#curtL{
-  left: calc(50% - 325px);
-    height: 390px;
-    background: repeating-linear-gradient(180deg, #C4A882, #B89870 28px);
-}
-#curtR{
-  right: calc(50% - 325px);
-    height: 390px;
-    background: repeating-linear-gradient(180deg, #C4A882, #B89870 28px);
-}
-#sc.night #curtL,#sc.night #curtR{filter:brightness(.45) hue-rotate(20deg)}
-
-/* ── LAMP GLOW — cone downward ── */
-#lampCone{
-  position: absolute;
-    bottom: 195px;
-    right: calc(50% - 150px);
-    width: 0;
-    height: 0;
-    border-left: 90px solid transparent;
-    border-right: 90px solid transparent;
-    border-top: 200px solid rgba(245, 200, 66, 0);
-    filter: blur(24px);
-    pointer-events: none;
-    transition: border-top-color 2s;
-    z-index: 3;
-    rotate: 180deg;
-}
-#sc.night #lampCone{border-top-color:rgba(245,200,66,.45)}
-
-#deskGlow{
-  position: absolute;
-    bottom: 205px;
-    right: calc(50% - 150px);
-    width: 200px;
-    height: 30px;
-    background: radial-gradient(ellipse, rgba(245, 200, 66, 0), transparent 70%);
-    pointer-events: none;
-    transition: background 2s;
-    z-index: 2;
-}
-#sc.night #deskGlow{
-  background:radial-gradient(ellipse,rgba(245,200,66,.25) 0%,transparent 70%);
-}
-
-/* room ambient — night overlay tint */
-#nightVeil{
-  position:absolute;inset:0;
-  background:rgba(20,15,40,0);
-  pointer-events:none;z-index:6;
-  transition:background 2s;
-}
-#sc.night #nightVeil{    background: rgba(38, 19, 58, 0.38);}
-
-/* ── DESK ── */
-#desk{
-  position: absolute;
-    bottom: 100px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 500px;
-    height: 130px;
-    background: #3D2B1F;
-    border-radius: 3px 3px 0 0;
-    box-shadow: 0 4px 0 #251A10, 0 8px 0 #1C1208;
-    transition: background .6s;
-}
-#deskSurface{
-  height:18px;background:#8B5E3C;
-  border-radius:3px 3px 0 0;
-  position:relative;
-  box-shadow:0 3px 0 #6B4428,0 6px 0 #5A3820;
-  transition:background 2s;
-}
-#sc.night #deskSurface{background:#4A3020}
-#deskBody{
-      height: 112px;
-    background: #7A5230;
-    position: relative;
-    transition: background 2s;
-}
-#sc.night #deskBody{background:#2E1C0E}
-#deskBody::before{
-  content: '';
-    position: absolute;
-    bottom: -50px;
-    width: 14px;
-    height: 50px;
-    background: #2B1A0F;
-    border-radius: 0 0 2px 2px;
-    left: 24px;
-}
-#deskBody::after{
-      content: '';
-    position: absolute;
-    bottom: -50px;
-    width: 14px;
-    height: 50px;
-    background: #2B1A0F;
-    border-radius: 0 0 2px 2px;
-    right: 24px;
-}
-#legL,#legR{
-  position:absolute;bottom:-52px;width:16px;height:52px;
-  background:#6B4428;border-radius:0 0 3px 3px;
-  transition:background 2s;
-}
-#sc.night #legL,#sc.night #legR{background:#2A1608}
-#legL{left:22px}#legR{right:22px}
-
-/* ── OBJECTS ── */
-#objs{
-      position: absolute;
-    bottom: 225px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 490px;
-    height: 110px;
-    z-index: 5;
-}
-
-/* BOOKS */
-#books{
-  position:absolute;left:6px;bottom:0;
-  display:flex;align-items:flex-end;gap:2px;
-}
-.bk{
-  border-radius:1px 1px 0 0;
-  transition:filter 2s;
-}
-#sc.night .bk{filter:brightness(.4) saturate(.7)}
-
-/* PENCIL CUP */
-#pcup{
-  position:absolute;left:110px;bottom:0;
-  transition:filter 2s;
-}
-#sc.night #pcup{filter:brightness(.38)}
-#cupBody{
-  width:26px;height:30px;background:#D4A96A;
-  border-radius:2px 2px 4px 4px;
-  clip-path:polygon(5% 0%,95% 0%,100% 100%,0% 100%);
-  position:relative;
-}
-#cupBody::before{content:'';position:absolute;top:-4px;left:-2px;right:-2px;height:5px;background:#C09050;border-radius:1px}
-.pn{
-  position:absolute;width:5px;border-radius:1px 1px 0 0;
-  bottom:30px;transition:filter 2s;
-}
-#sc.night .pn{filter:brightness(.4)}
-#pn1{left:110px;height:52px;background:#F0D840;transform:rotate(-6deg);transform-origin:bottom center}
-#pn2{left:117px;height:45px;background:#C4512A;transform:rotate(2deg);transform-origin:bottom center}
-#pn3{left:123px;height:58px;background:#E8D5B0;transform:rotate(-1deg);transform-origin:bottom center}
-
-/* OPEN BOOK */
-#obook{
-  position:absolute;left:158px;bottom:0;
-  transition:filter 2s;
-}
-#sc.night #obook{filter:brightness(.32)}
-#bkL,#bkR{
-  display:inline-block;vertical-align:bottom;
-  width:44px;height:30px;
-  background:#F0E6C8;border:1px solid #C8B898;
-}
-#bkL{border-radius:2px 0 0 2px;transform:rotate(-2deg);transform-origin:right bottom}
-#bkR{border-radius:0 2px 2px 0;transform:rotate(2deg);transform-origin:left bottom}
-#bkL::after,#bkR::after{
-  content:'';position:absolute;top:5px;left:4px;right:4px;height:1px;
-  background:rgba(139,107,74,.22);
-  box-shadow:0 5px 0 rgba(139,107,74,.18),0 10px 0 rgba(139,107,74,.14),0 15px 0 rgba(139,107,74,.10);
-}
-#bkL,#bkR{position:relative}
-#bkSpine{display:inline-block;vertical-align:bottom;width:5px;height:32px;background:#8B5E3C;border-radius:1px}
-
-/* PAPER STACK */
-#pstack{
-  position:absolute;left:252px;bottom:0;
-  transition:filter 2s;
-}
-#sc.night #pstack{filter:brightness(.3)}
-.sh{
-  position:absolute;bottom:0;width:48px;height:34px;
-  background:#F0E6C8;border:1px solid rgba(139,107,74,.28);border-radius:1px;
-}
-
-/* MUG */
-#mugG{
-  position:absolute;right:58px;bottom:0;
-  transition:filter 2s;
-}
-#sc.night #mugG{filter:brightness(.45)}
-#saucer{width:50px;height:6px;background:#B89870;border-radius:50%;margin:0 auto}
-#mugB{
-  width:38px;height:42px;background:#7A8C6E;
-  border-radius:4px 4px 5px 5px;
-  margin:0 auto;position:relative;
-}
-#mugB::before{content:'';position:absolute;top:-4px;left:-2px;right:-2px;height:7px;background:#8BA07A;border-radius:2px}
-#mugB::after{content:'';position:absolute;top:9px;left:4px;right:4px;height:5px;background:rgba(255,255,255,.14);border-radius:1px}
-#mhandle{
-  position:absolute;right:-12px;top:8px;
-  width:13px;height:19px;
-  border:3.5px solid #7A8C6E;border-radius:0 10px 10px 0;border-left:none;
-}
-.stm{
-  position:absolute;font-size:10px;color:#C2A882;
-  opacity:0;transition:opacity 1.5s;
-  animation:stmRise 2.8s ease-in-out infinite;
-}
-#sc.night .stm{opacity:.55}
-#st1{bottom:48px;left:6px;animation-delay:0s}
-#st2{bottom:48px;left:20px;animation-delay:1s}
-@keyframes stmRise{
-  0%{transform:translateY(0);opacity:0}
-  40%{opacity:.7}
-  100%{transform:translateY(-16px);opacity:0}
-}
-
-/* PLANT */
-#plantG{
-  position:absolute;right:114px;bottom:0;
-  transition:filter 2s;
-}
-#sc.night #plantG{filter:brightness(.38) saturate(.7)}
-#potBody{
-  width:34px;height:28px;background:#C4512A;
-  border-radius:2px 2px 6px 6px;
-  clip-path:polygon(5% 0%,95% 0%,100% 100%,0% 100%);
-  position:relative;
-}
-#potBody::before{content:'';position:absolute;top:-5px;left:-3px;right:-3px;height:7px;background:#A8431F;border-radius:2px}
-#potSoil{position:absolute;top:3px;left:5px;right:5px;height:6px;background:#3D2B1F;border-radius:1px}
-
-/* ── LAMP (fixed, attached to desk) ── */
-#lampWrap{
-  position: absolute;
-    right: 174px;
-    bottom: 0;
-    width: 44px;
-    cursor: pointer;
-    z-index: 7;
-    transition: filter 2s;
-}
-#sc.night #lampWrap{filter:brightness(.9)}
-#lBase{
-  position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 36px;
-    height: 7px;
-    background: #5C4030;
-    border-radius: 3px;
-}
-#lPost{
-  position: absolute;
-    bottom: 5px;
-    left: 50%;
-    width: 5px;
-    height: 72px;
-    background: #6B4A30;
-    border-radius: 3px;
-    transform: translateX(-50%);
-}
-/* elbow */
-#lElbow{
-  position: absolute;
-    bottom: 73px;
-    left: 50%;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: #5C4030;
-    transform: translateX(-50%);
-}
-/* arm going right and up */
-#lArm{
-  position: absolute;
-    bottom: 77px;
-    left: calc(50% + 0px);
-    width: 5px;
-    height: 52px;
-    background: #6B4A30;
-    border-radius: 3px;
-    transform-origin: bottom center;
-    transform: translateX(-50%) rotate(30deg);
-}
-/* shade */
-#lShade{
-      position: absolute;
-    bottom: 117px;
-    left: calc(50% + 23px);
-    width: 52px;
-    height: 20px;
-    background: #C4512A;
-    border-radius: 22px 22px 3px 3px;
-    transform: translateX(-50%) rotate(28deg);
-    transform-origin: center bottom;
-    pointer-events: none;
-}
-#lShade::after{
-  content:'';
-  position:absolute;bottom:-5px;left:50%;transform:translateX(-50%);
-  width:9px;height:9px;border-radius:50%;
-  background:#F5C842;
-  box-shadow:0 0 0 rgba(245,200,66,0);
-  opacity:0;
-  transition:opacity 2s,box-shadow 2s;
-}
-#sc.night #lShade::after{
-  opacity:1;
-  box-shadow:0 0 18px 8px rgba(245,200,66,.7);
-}
-#lHint{
-  position: absolute;
-    bottom: -18px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 9px;
-    color: white;
-    letter-spacing: .06em;
-    white-space: nowrap;
-    opacity: .6;
-    transition: opacity .5s;
-}
-
-/* NOTE on wall */
-#noteWall{
-  position: absolute;
-    top: 115px;
-    left: 84%;
-    transform: translateX(-48%) rotate(-1.5deg);
-    width: 150px;
-    height: 110px;
-    background: #F0E6C8;
-    padding: 10px 10px 14px;
-    box-shadow: 2px 3px 14px rgba(0, 0, 0, .22);
-    z-index: 4;
-    transition: box-shadow 2s, filter 2s;
-}
-#sc.night #noteWall{
-  box-shadow:2px 3px 22px rgba(0,0,0,.6),0 0 28px rgba(245,200,66,.06);
-  filter:brightness(.85);
-}
-#noteWall::before{
-  content:'';position:absolute;top:-8px;left:50%;transform:translateX(-50%);
-  width:13px;height:13px;border-radius:50%;
-  background:#C4512A;box-shadow:0 2px 4px rgba(0,0,0,.35);
-}
-#noteWall::after{
-  content:'';position:absolute;bottom:10px;left:10px;right:10px;
-  height:1px;background:rgba(196,81,42,.2);
-  box-shadow:0 -6px 0 rgba(196,81,42,.12);
-}
-#noteWall .nn{
-      font-family: 'Fraunces', serif;
-    font-weight: 900;
-    font-size: clamp(4rem, 4vw, 4rem);
-    line-height: 1;
-    color: #2C2418;
-    text-align: center;
-    display: block;
-}
-#noteWall .ns{
-  font-size: 10px;
-    color: #8B6B4A;
-    letter-spacing: .13em;
+  h1{
+    font-size:1.6rem;
+    margin:0 0 2px;
+    border-bottom:2px dashed var(--border);
     text-transform: uppercase;
-    text-align: center;
-    display: block;
-    margin-top: 5px;
-}
+    padding-bottom:8px;
+    display:inline-block;
+    transition:color 0.2s ease;
+    font-family: var(--display);
+    width: 140%;
+  }
+  h1:hover{ color:var(--accent); }
 
-/* caption */
-#caption{
-  position:absolute;bottom:12px;left:50%;transform:translateX(-50%);
-  font-size:10px;color:#8B6B4A;letter-spacing:.1em;
-  white-space:nowrap;z-index:8;
-  transition:color 2s;
-}
-#sc.night #caption{color:#6858A0}
+  ::selection{ background:var(--accent); color:var(--bg); }
+  .tagline{
+    font-family:var(--h1), monospace;
+    font-size:0.82rem;
+    color:var(--muted);
+    margin:8px 0 20px;
+  }
+
+  .statut{
+    font-family: var(--h1), monospace;
+    font-size:0.8rem;
+    background:var(--card-bg);
+    border:1px solid var(--border);
+    padding:6px 10px;
+    display:inline-block;
+    margin-bottom:24px;
+  }
+  .statut b{ color:var(--accent); }
+
+  h2{
+    font-family:var(--h1), monospace;
+    font-size:0.85rem;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    margin:32px 0 10px;
+    border-bottom:1px dashed var(--border-soft);
+    padding-bottom:4px;
+  }
+
+  ul.projets{
+    list-style:none;
+    padding: .9rem;
+    margin: 0;
+    border: 1px dashed var(--border);
+    background: var(--card-bg);
+    font-size: 1rem;
+  }
+  ul.projets li{
+    padding:8px 0;
+    border-bottom:1px solid var(--border-soft);
+    font-family: var(--h1);
+  }
+  ul.projets li:last-child{ border-bottom:none; }
+  ul.projets a{ text-decoration:none; }
+  ul.projets a:hover{ text-decoration:underline; }
+  ul.projets .desc{
+    display:block;
+    font-size:0.85rem;
+    color:var(--muted);
+    margin-top:2px;
+  }
+
+  .billet{
+    margin-bottom: 5px;
+    border: 1px dashed var(--border);
+    background: var(--card-bg);
+    padding: .9rem;
+    font-family: var(--h1);
+  }
+  .billet .date{
+    font-family:var(--h1), monospace;
+    font-size:0.75rem;
+    color:var(--muted);
+  }
+  .billet h3{ font-size:1rem; margin:2px 0 4px; }
+  .billet h3 a{ text-decoration:none; }
+  .billet h3 a:hover{ text-decoration:underline; }
+  .billet p{ margin:0; font-size:0.92rem; color:var(--text); }
+
+  footer{
+    margin-top:40px;
+    padding-top:16px;
+    border-top:2px solid var(--border);
+    font-family:var(--h1), monospace;
+    font-size:0.75rem;
+    color:var(--muted);
+  }
+
+  hr{ border:none; border-top:1px dashed var(--border-soft); margin:24px 0; }
+
+  /* ---- sidebar ---- */
+  aside{
+    font-family:var(--h1), monospace;
+    font-size:0.82rem;
+    top: 10%;
+    position: relative;
+  }
+  aside .bloc{
+    border:1px solid var(--border);
+    background:var(--card-bg);
+    padding:12px;
+    margin-bottom:16px;
+  }
+  aside .bloc h4{
+    margin:0 0 8px;
+    font-size:0.72rem;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    color:var(--muted);
+  }
+  aside ul{ list-style:none; margin:0; padding:0; }
+  aside ul li{ margin-bottom:6px; }
+  aside ul li a{ text-decoration:none; }
+  aside ul li a:hover{ text-decoration:underline; }
+
+  .dot{
+    display:inline-block; width:7px; height:7px;
+    border-radius:50%; background:var(--dot);
+    margin-right:5px;
+  }
 </style>
+<link rel="shortcut icon" type="image/png" href="favicon.png"/>
+</head>
+<body>
+<div class="wrap">
 
-</head><body><div id="sc" class="">
+  <main>
 
-  <!-- WALL + TEXTURE -->
-  <div id="wall"></div>
-  <div id="wallTex"></div>
-  <div id="nightVeil"></div>
+    <h1>bureau des projets</h1>
+    <p class="tagline">le site perso de Jordan Mrt.</p>
 
-  <!-- WINDOW -->
-  <div id="winWrap">
-    <div id="winSky">
-      <div id="cloudsTrack">
-        <!-- cloud 1 -->
-        <div class="cld" style="width:68px;height:20px;top:30px;left:20px">
-          <div style="position:absolute;width:38px;height:32px;background:rgba(255,255,255,.88);border-radius:50%;top:-16px;left:12px"></div>
-          <div style="position:absolute;width:28px;height:24px;background:rgba(255,255,255,.88);border-radius:50%;top:-12px;left:34px"></div>
-        </div>
-        <!-- cloud 2 -->
-        <div class="cld" style="width:50px;height:16px;top:62px;left:130px">
-          <div style="position:absolute;width:30px;height:26px;background:rgba(255,255,255,.88);border-radius:50%;top:-13px;left:8px"></div>
-        </div>
-        <!-- cloud 3 (loop) -->
-        <div class="cld" style="width:60px;height:18px;top:24px;left:310px">
-          <div style="position:absolute;width:34px;height:28px;background:rgba(255,255,255,.88);border-radius:50%;top:-14px;left:10px"></div>
-          <div style="position:absolute;width:24px;height:20px;background:rgba(255,255,255,.88);border-radius:50%;top:-10px;left:32px"></div>
-        </div>
-        <!-- cloud 4 -->
-        <div class="cld" style="width:45px;height:14px;top:70px;left:420px">
-          <div style="position:absolute;width:26px;height:22px;background:rgba(255,255,255,.88);border-radius:50%;top:-11px;left:8px"></div>
-        </div>
+    <div class="statut">en ce moment : <b id="statut-live">chargement…</b></div>
+
+<script>
+  fetch('en-ce-moment.json')
+    .then(r => r.json())
+    .then(data => {
+      document.getElementById('statut-live').textContent = data.texte;
+    })
+    .catch(() => {});
+</script>
+
+    <p>Salut, c'est mon coin perso. Je bidouille des trucs quand j'en ai envie (des sites, PWA, idées farfelues) et je note ça ici de temps en temps. Rien de très sérieux, surtout pour le plaisir de coder.</p>
+
+    <h2>projets</h2>
+    <ul class="projets">
+      <li>
+        <a href="https://jordanmrt.github.io/landing-ttb/" target="_blank">Time To Binge</a>
+        <span class="desc">tracker de films et séries</span>
+      </li>
+      <li>
+        <a href="https://jordanmrt.github.io/" target="_blank">Portfolio</a>
+        <span class="desc">mon site principal, bento pop</span>
+      </li>
+      <li>
+        <a href="https://jordanmrt.github.io/theletterclub/" target="_blank">The Letter Club</a>
+        <span class="desc">projet d'écriture épistolaire</span>
+      </li>
+      <li>
+        <a href="https://jordanmrt.github.io/sncf-poxy-live/" target="_blank">SNCF Live</a>
+        <span class="desc">tracker de trains en temps réel</span>
+      </li>
+      <li>
+        <a href="https://jordanmrt.github.io/gus" target="_blank">G.U.S</a>
+        <span class="desc">Générateur d'Utilités Sensibles</span>
+      </li>
+      
+    </ul>
+
+    <h2>blog et billet d'humeur</h2>
+
+    <div class="billet">
+      <span class="date">12 août 2026</span>
+      <h3><a href="billets/helloworld.html">hello world!</a></h3>
+      <!--<p>le tout premier mot posé ici.</p>-->
+    </div>
+
+    <hr>
+
+    <footer>
+      fait à la main, sans framework, dernière mise à jour le 12 août 2026
+    </footer>
+
+  </main>
+
+  <aside>
+
+    <div class="bloc">
+      <h4>statut</h4>
+      <span class="dot" id="statut-dot"></span><span id="statut-texte">en ligne</span>
+      <div id="statut-message" style="margin-top:4px; color:var(--muted); display:none;"></div>
+      <div style="margin-top: 8px;
+    color: var(--muted);
+    border-top: 1px dashed var(--border);
+    padding-top: 10px;">
+        <span id="spotify-label">écoute en ce moment :</span><br>
+        <a href="#" id="spotify-link" target="_blank">[chargement…]</a>
       </div>
-      <!-- stars -->
-      <div class="star" style="width:2px;height:2px;top:12%;left:15%"></div>
-      <div class="star" style="width:3px;height:3px;top:22%;left:58%"></div>
-      <div class="star" style="width:2px;height:2px;top:8%;left:72%"></div>
-      <div class="star" style="width:2px;height:2px;top:38%;left:30%"></div>
-      <div class="star" style="width:1px;height:1px;top:18%;left:82%"></div>
-      <div class="star" style="width:2px;height:2px;top:48%;left:12%"></div>
-      <div class="star" style="width:3px;height:3px;top:6%;left:45%"></div>
-      <!-- moon -->
-      <div id="moon"></div>
-    </div>
-    <div id="winFrame"></div>
-  </div>
-  <div id="winSill"></div>
-
-  <!-- curtains -->
-  <div id="curtL"></div>
-  <div id="curtR"></div>
-
-  <!-- NOTE on wall -->
-  <div id="noteWall" style="transition: transform 1s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.8s; opacity: 1; transform: translateY(-22px);">
-    <span class="nn">404</span>
-    <span class="ns">page introuvable</span>
-  </div>
-
-  <!-- FLOOR -->
-  <div id="baseboard"></div>
-  <div id="floor"></div>
-  <div id="floorPlanks"></div>
-
-  <!-- LAMP CONE + DESK GLOW -->
-  <div id="lampCone"></div>
-  <div id="deskGlow"></div>
-
-  <!-- DESK -->
-  <div id="desk">
-    <div id="deskSurface">
-      <div id="legL"></div>
-      <div id="legR"></div>
-    </div>
-    <div id="deskBody"></div>
-  </div>
-
-  <!-- OBJECTS -->
-  <div id="objs">
-
-    <!-- pencils -->
-    <div class="pn" id="pn1"></div>
-    <div class="pn" id="pn2"></div>
-    <div class="pn" id="pn3"></div>
-
-    <!-- pencil cup -->
-    <div id="pcup"><div id="cupBody"></div></div>
-
-    <!-- open book -->
-    <div id="obook">
-      <div id="bkL"></div><div id="bkSpine"></div><div id="bkR"></div>
     </div>
 
-    <!-- paper stack -->
-    <div id="pstack">
-      <div class="sh" style="transform:rotate(-3deg);bottom:4px;left:3px"></div>
-      <div class="sh" style="transform:rotate(2deg);bottom:2px;left:1px"></div>
-      <div class="sh"></div>
+    <div class="bloc">
+      <h4>navigation</h4>
+      <ul>
+        <li><a href="index.html">accueil</a></li>
+        <li><a href="billets.html">tous les billets</a></li>
+        <li><a href="https://jordanmrt.github.io/" target="_blank">Portfolio Bento</a></li>
+        <li><a href="about.html">à propos</a></li>
+      </ul>
     </div>
 
-    <!-- books -->
-    <div id="books">
-      <div class="bk" style="width:15px;height:60px;background:#8B6B4A"></div>
-      <div class="bk" style="width:13px;height:46px;background:#C4512A"></div>
-      <div class="bk" style="width:18px;height:70px;background:#4A6B5A"></div>
-      <div class="bk" style="width:11px;height:42px;background:#D4A96A"></div>
-      <div class="bk" style="width:16px;height:54px;background:#5C4030"></div>
+    <div class="bloc">
+      <h4>ailleurs</h4>
+      <ul>
+        <li><a href="https://github.com/JordanMRT" target="_blank">github</a></li>
+        <li><a href="http://instagram.com/jordan.mrt" target="_blank">instagram</a></li>
+        <li><a href="#">rss (à venir)</a></li>
+      </ul>
     </div>
 
-    <!-- mug -->
-    <div id="mugG">
-      <div class="stm" id="st1">~</div>
-      <div class="stm" id="st2">~</div>
-      <div id="mugB"><div id="mhandle"></div></div>
-      <div id="saucer"></div>
+    <div class="bloc">
+      <h4>sites que j'aime</h4>
+      <ul>
+        <li><a href="#">[à compléter]</a></li>
+      </ul>
     </div>
 
-    <!-- plant -->
-    <div id="plantG">
-      <svg width="50" height="65" viewBox="0 0 50 65" style="display:block;overflow:visible">
-        <path d="M25 65 C25 50 21 36 13 24" fill="none" stroke="#7A9E7E" stroke-width="2.5" stroke-linecap="round"></path>
-        <path d="M13 24 C5 14 0 16 2 8 C9 13 15 22 13 24Z" fill="#7A9E7E"></path>
-        <path d="M25 55 C27 42 35 30 45 24" fill="none" stroke="#7A9E7E" stroke-width="2" stroke-linecap="round"></path>
-        <path d="M45 24 C52 16 52 10 48 12 C44 18 43 24 45 24Z" fill="#7A9E7E"></path>
-        <path d="M25 60 C21 48 11 42 5 40" fill="none" stroke="#5C8862" stroke-width="1.8" stroke-linecap="round"></path>
-        <path d="M5 40 C-1 38 -2 32 2 34 C4 38 5 40 5 40Z" fill="#5C8862"></path>
-        <path d="M25 52 C29 42 38 38 44 38" fill="none" stroke="#5C8862" stroke-width="1.6" stroke-linecap="round"></path>
-        <path d="M44 38 C50 36 51 42 47 42 C45 40 44 38 44 38Z" fill="#5C8862"></path>
-      </svg>
-      <div id="potBody"><div id="potSoil"></div></div>
-    </div>
+  </aside>
 
-    <!-- LAMP -->
-    <div id="lampWrap">
-      <div id="lBase"></div>
-      <div id="lPost"></div>
-      <div id="lElbow"></div>
-      <div id="lArm"></div>
-      <div id="lShade"></div>
-      <div id="lHint">allumer</div>
-    </div>
-
-  </div><!-- /objs -->
-
-  <p id="caption">Cette page n'existe pas encore — ou plutôt, elle existe pour ne rien faire de sérieux. C'est un bac à sable.</p>
 </div>
 
 <script>
-(function(){
-  const sc  = document.getElementById('sc');
-  const lw  = document.getElementById('lampWrap');
-  const hint = document.getElementById('lHint');
-  let lit = false;
+  // Configuration Supabase — à remplir avec tes vraies valeurs
+  // (visibles dans Project Settings > API sur ton dashboard Supabase)
+  const SUPABASE_URL = 'https://fdbycrkflickpcjcihwl.supabase.co'; // ex: 'https://xxxxxxxx.supabase.co'
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZkYnljcmtmbGlja3BjamNpaHdsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY1MjEyMjksImV4cCI6MjEwMjA5NzIyOX0.qNdWKplToaJJVHvFc2h0MpgJ9tQRab8vMPpUU4r8SCE'; // la clé "anon public", pas la service_role !
 
-  function toggle(){
-    lit = !lit;
-    sc.classList.toggle('night', lit);
-    hint.textContent = lit ? 'éteindre' : 'allumer';
+  async function supabaseSelect(table) {
+    if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return null;
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}?select=*&id=eq.1`, {
+      headers: {
+        apikey: SUPABASE_ANON_KEY,
+        Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+      },
+    });
+    if (!res.ok) return null;
+    const rows = await res.json();
+    return rows[0] ?? null;
   }
 
-  lw.addEventListener('click', toggle);
-  lw.addEventListener('touchstart', e=>{ e.preventDefault(); toggle(); }, {passive:false});
+  // -------- statut en ligne / hors ligne --------
+  supabaseSelect('statut').then(data => {
+    const dot = document.getElementById('statut-dot');
+    const texte = document.getElementById('statut-texte');
+    const message = document.getElementById('statut-message');
 
-  /* note drop entrance */
-  const note = document.getElementById('noteWall');
-  note.style.transition = 'transform 1s cubic-bezier(.34,1.56,.64,1), opacity .8s';
-  note.style.opacity = '0';
-  note.style.transform += ' translateY(-22px)';
-  setTimeout(()=>{
-    note.style.opacity = '1';
-    note.style.transform = note.style.transform.replace(' translateY(-22px)','');
-  }, 250);
-})();
+    if (!data) return; // Supabase pas encore branché, on garde l'état par défaut du HTML
+
+    if (data.online) {
+      dot.style.background = 'var(--dot)';
+      texte.textContent = 'en ligne';
+    } else {
+      dot.style.background = '#a8a094';
+      texte.textContent = 'hors ligne';
+    }
+
+    if (data.message) {
+      message.textContent = data.message;
+      message.style.display = 'block';
+    }
+  });
+
+  // -------- morceau Spotify (lu depuis la table now_playing) --------
+  const spotifyLabel = document.getElementById('spotify-label');
+  const spotifyLink = document.getElementById('spotify-link');
+
+  supabaseSelect('now_playing').then(data => {
+    if (!data) {
+      spotifyLabel.textContent = 'spotify pas encore branché';
+      spotifyLink.style.display = 'none';
+      return;
+    }
+    if (!data.title) {
+      spotifyLabel.textContent = 'rien d\'écouté récemment';
+      spotifyLink.style.display = 'none';
+      return;
+    }
+    spotifyLabel.textContent = data.is_playing ? 'écoute en ce moment :' : 'dernier morceau écouté :';
+    spotifyLink.textContent = `${data.title} — ${data.artist}`;
+    spotifyLink.href = data.url || '#';
+  });
 </script>
-</body></html>
+
+</body>
+</html>
