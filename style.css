@@ -184,7 +184,7 @@ aside ul li a:hover{ text-decoration:underline; }
 }
 
  /* ---- liane par bloc : enroulée sur le coin supérieur droit, ancrée au bloc ---- */
-  .liane-coin1, .liane-coin3 {
+  .liane-coin-tr {
     position:absolute;
     top:-9px;
     right:-5px;
@@ -195,15 +195,39 @@ aside ul li a:hover{ text-decoration:underline; }
     image-rendering:pixelated;
   }
 
-  .liane-coin2, .liane-coin4{
+  .liane-coin-bl {
+    position:absolute;
+    bottom:-5px;
+    left:-5px;
+    width:52px;
+    height:52px;
+    z-index:3;
+    pointer-events:none;
+    rotate: -180deg;
+    image-rendering: pixelated;
+  }
+
+  .liane-coin-tl {
     position:absolute;
     top:-5px;
-    left:-9px;
+    left:-5px;
     width:52px;
     height:52px;
     z-index:3;
     pointer-events:none;
     rotate: -90deg;
+    image-rendering:pixelated;
+  }
+
+  .liane-coin-br {
+    position:absolute;
+    bottom:-5px;
+    right:-9px;
+    width:52px;
+    height:52px;
+    z-index:3;
+    pointer-events:none;
+    rotate: 90deg;
     image-rendering: pixelated;
   }
 
