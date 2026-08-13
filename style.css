@@ -181,6 +181,48 @@ aside ul li a:hover{ text-decoration:underline; }
   margin-right:5px;
 }
 
+ /* ---- liane par bloc : enroulée sur le coin supérieur droit ---- */
+  .liane-coin1, .liane-coin3 {
+    position:relative;
+    top:-11px;
+    left:185px;
+    width:80px;
+    height:80px;
+    z-index:3;
+    pointer-events:none;
+    margin: -50px;
+  }
+
+  .liane-coin2, .liane-coin4{
+    position:relative;
+    top:-5px;
+    left:25px;
+    width:80px;
+    height:80px;
+    z-index:3;
+    pointer-events:none;
+    margin: -50px;
+    rotate: -90deg;
+  }
+
+  /* ---- le renard, posé sur le coin du dernier bloc ---- */
+  .renard{
+    position:absolute;
+    top: 10%;
+    right:40%;
+    width:64px;
+    z-index:4;
+    pointer-events:none;
+  }
+
+  .note{
+    max-width:600px;
+    margin-top:240px;
+    font-size:0.8rem;
+    color:var(--muted);
+    line-height:1.6;
+  }
+
 @media (max-width:680px){
   h1{ width: 100%;}
 }
