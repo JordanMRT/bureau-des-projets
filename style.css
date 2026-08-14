@@ -101,6 +101,18 @@ h2{
   width: 450px;
 }
 
+#psst {
+    display: inline-block;
+    position: absolute;
+    margin-left: -60px;
+    margin-top: -15px;
+    z-index: -1;
+    transition: 0.8s ease;
+}
+#psst:hover {
+    margin-left: -113px;
+}
+
 .blog {
   width: 45%;
   display: block;
@@ -266,6 +278,7 @@ aside ul li a:hover{ text-decoration:underline; }
     width: 64px;
     z-index: 4;
     pointer-events: none;}
+    #psst {display: none;}
   }
 
 /* ==== éléments décoratifs injectés par decor.js ==== */
@@ -365,8 +378,10 @@ main, aside{ position:relative; }
   .decor-chat{ bottom: 35px; right: 25px;}
   .decor-carnet, .decor-carnet-billet {bottom: -70px; right: -5px;}
   .decor-tasse {top: -5px; right: 95px;}
-  h2 {width: 210px;}
   .decor-enveloppe {width: 150px; bottom: 155px; right: -5px;}
+  .decor-enveloppe-billet{ bottom: -45px; right: -5px; }
+  h2 {width: 210px;}
+  
   main{ margin-bottom: 90px; } /* laisse la place au carnet qui déborde de 70px sous le footer, sans toucher aside */
 }
 /* ==== égaliseur animé à côté du morceau Spotify ==== */

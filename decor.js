@@ -28,7 +28,7 @@
 
     // ---- enveloppe timbrée, dépasse du coin bas de main ----
 if (main) {
-  const isBilletsPage = window.location.pathname.includes('/billets');
+  const isBilletsPage = window.location.pathname.includes('/billets/');
 
   if (isBilletsPage) {
     main.appendChild(img('decor-enveloppe-billet', 'enveloppe.png'));
