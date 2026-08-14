@@ -41,8 +41,8 @@
     <hr>
 
     <footer>
-      fait à la main, sans framework, dernière mise à jour le 12 août 2026
-    </footer>
+  fait à la main, sans framework — dernière mise à jour le <span id="derniere-maj">chargement…</span>
+</footer>
 
   </main>
 
@@ -160,6 +160,20 @@
     spotifyLink.href = data.url || '#';
   });
 </script>
+<script>
+  fetch('https://api.github.com/repos/JordanMRT/bureau-des-projets/commits?per_page=1')
+    .then(r => r.json())
+    .then(commits => {
+      const date = new Date(commits[0].commit.committer.date);
+      document.getElementById('derniere-maj').textContent = date.toLocaleDateString('fr-FR', {
+        day: 'numeric', month: 'long', year: 'numeric'
+      });
+    })
+    .catch(() => {
+      // si l'API GitHub est indisponible, le texte "chargement…" reste affiché
+    });
+</script>
+<script src="../decor.js"></script>
 
 </body>
 </html>

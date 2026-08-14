@@ -259,3 +259,79 @@ aside ul li a:hover{ text-decoration:underline; }
     z-index: 4;
     pointer-events: none;}
   }
+
+/* ==== éléments décoratifs injectés par decor.js ==== */
+
+main, aside{ position:relative; }
+
+.decor-tasse{
+  position:absolute;
+  top: -5px;
+  right: 385px;
+  width:38px;
+  z-index:5;
+  pointer-events:none;
+}
+
+.decor-enveloppe{
+  position:absolute;
+  bottom: 140px;
+  right: -10px;
+  width: 175px;
+  z-index: -1;
+  pointer-events: none;
+  transform: rotate(10deg);
+  image-rendering: pixelated;
+}
+
+.decor-carnet{
+  position:absolute;
+  bottom: -15px;
+  right: -70px;
+  width:60px;
+  z-index:5;
+  pointer-events:none;
+}
+
+.decor-fenetre{
+  position:absolute;
+  bottom: -110px;
+  right: 0px;
+  width: 215px;
+  z-index:5;
+  pointer-events:none;
+  image-rendering: pixelated;
+}
+
+.decor-chat{
+  position:absolute;
+  bottom: 15px;
+  right: 65px;
+  width:48px;
+  z-index:5;
+  pointer-events:none;
+}
+
+.decor-plante{
+  position:fixed;
+  bottom:0;
+  left:10px;
+  width:58px;
+  z-index:5;
+  pointer-events:none;
+  transform-origin:bottom center;
+  animation:decor-frisson 2.5s ease-in-out infinite;
+  image-rendering: pixelated;
+}
+
+@keyframes decor-frisson{
+  0%, 100% { transform:rotate(0deg); }
+  50% { transform:rotate(2deg); }
+}
+
+@media (max-width:680px){
+  .decor-plante, .decor-fenetre{ display:none; } /* trop à l'étroit sur mobile, on l'enlève plutôt que de la faire chevaucher le contenu */
+  .decor-chat{ bottom: 35px; right: 25px;}
+  .decor-carnet {bottom: -65px; right: -5px;}
+  .decor-tasse {top: -5px; right: 95px;}
+}
