@@ -101,6 +101,12 @@ h2{
   width: 450px;
 }
 
+.blog {
+  width: 45%;
+  display: block;
+  justify-self: center;
+}
+
 ul.projets{
   list-style:none;
   padding: .9rem;
@@ -286,10 +292,30 @@ main, aside{ position:relative; }
   image-rendering: pixelated;
 }
 
+.decor-enveloppe-billet{
+  position:absolute;
+  top: 240px;
+  right: -10px;
+  width: 175px;
+  z-index: -1;
+  pointer-events: none;
+  transform: rotate(10deg);
+  image-rendering: pixelated;
+}
+
 .decor-carnet{
   position:absolute;
   bottom: -15px;
   right: -70px;
+  width:60px;
+  z-index:5;
+  pointer-events:none;
+}
+
+.decor-carnet-billet{
+  position:absolute;
+  bottom: -45px;
+  right: 0px;
   width:60px;
   z-index:5;
   pointer-events:none;
@@ -303,6 +329,9 @@ main, aside{ position:relative; }
   z-index:5;
   pointer-events:none;
   image-rendering: pixelated;
+  border: 1px dashed var(--muted);
+  box-shadow: 4px 5px 0 rgba(58, 42, 23, 0.16);
+  margin-bottom: 10px;
 }
 
 .decor-chat{
@@ -334,7 +363,7 @@ main, aside{ position:relative; }
 @media (max-width:680px){
   .decor-plante, .decor-fenetre{ display:none; } /* trop à l'étroit sur mobile, on l'enlève plutôt que de la faire chevaucher le contenu */
   .decor-chat{ bottom: 35px; right: 25px;}
-  .decor-carnet {bottom: -70px; right: -5px;}
+  .decor-carnet, .decor-carnet-billet {bottom: -70px; right: -5px;}
   .decor-tasse {top: -5px; right: 95px;}
   h2 {width: 210px;}
   .decor-enveloppe {width: 150px; bottom: 155px; right: -5px;}
