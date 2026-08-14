@@ -35,7 +35,8 @@
     if (main) {
       const gribouillis = ['griffonnage-1.png', 'griffonnage-2.png', 'griffonnage-3.png'];
       const choix = gribouillis[Math.floor(Math.random() * gribouillis.length)];
-      main.appendChild(img('decor-carnet', choix, 'un gribouillis du carnet'));
+      const cibleCarnet = main.querySelector('footer') || main;
+      cibleCarnet.appendChild(img('decor-carnet', choix, 'un gribouillis du carnet'));
     }
 
     // ---- fenêtre jour/nuit selon l'heure locale du visiteur ----

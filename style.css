@@ -142,6 +142,7 @@ ul.projets .desc{
 .billet p{ margin:0; font-size:0.92rem; color:var(--text); }
 
 footer{
+  position:relative;
   margin-top:40px;
   padding-top:16px;
   border-top:2px solid var(--border);
