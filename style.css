@@ -335,3 +335,44 @@ main, aside{ position:relative; }
   .decor-carnet {bottom: -65px; right: -5px;}
   .decor-tasse {top: -5px; right: 95px;}
 }
+/* ==== égaliseur animé à côté du morceau Spotify ==== */
+
+.eq{
+  display:inline-flex;
+  align-items:flex-end;
+  gap:2px;
+  height:12px;
+  margin-left:6px;
+  vertical-align:middle;
+}
+.eq span{
+  display:block;
+  width:3px;
+  height:3px;
+  background:var(--border-soft);
+  animation:eq-bounce 0.9s ease-in-out infinite;
+  animation-play-state:paused;
+}
+.eq span:nth-child(1){ animation-delay:0s; }
+.eq span:nth-child(2){ animation-delay:0.2s; }
+.eq span:nth-child(3){ animation-delay:0.4s; }
+.eq span:nth-child(4){ animation-delay:0.2s; }
+.eq span:nth-child(5){ animation-delay:0s; }
+.eq span:nth-child(6){ animation-delay:0.2s; }
+.eq span:nth-child(7){ animation-delay:0.4s; }
+.eq span:nth-child(8){ animation-delay:0.2s; }
+.eq span:nth-child(9){ animation-delay:0s; }
+.eq span:nth-child(10){ animation-delay:0.2s; }
+.eq span:nth-child(11){ animation-delay:0.4s; }
+.eq span:nth-child(12){ animation-delay:0.2s; }
+.eq span:nth-child(13){ animation-delay:0s; }
+.eq span:nth-child(14){ animation-delay:0.2s; }
+.eq span:nth-child(15){ animation-delay:0.4s; }
+.eq span:nth-child(16){ animation-delay:0.2s; }
+.eq span:nth-child(17){ animation-delay:0s; }
+.eq.playing span{ animation-play-state:running; }
+
+@keyframes eq-bounce{
+  0%, 100% { height:3px; }
+  50% { height:12px; }
+}

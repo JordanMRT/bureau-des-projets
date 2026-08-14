@@ -87,7 +87,7 @@
     border-top: 1px dashed var(--border);
     padding-top: 10px;">
         <span id="spotify-label">écoute en ce moment :</span><br>
-        <a href="#" id="spotify-link" target="_blank">[chargement…]</a>
+        <a href="#" id="spotify-link" target="_blank">[chargement…]</a><span class="eq" id="spotify-eq" style="display:none;"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span>
       </div>
     </div>
 
@@ -171,21 +171,26 @@
   // -------- morceau Spotify (lu depuis la table now_playing) --------
   const spotifyLabel = document.getElementById('spotify-label');
   const spotifyLink = document.getElementById('spotify-link');
+  const spotifyEq = document.getElementById('spotify-eq');
 
   supabaseSelect('now_playing').then(data => {
     if (!data) {
       spotifyLabel.textContent = 'spotify pas encore branché';
       spotifyLink.style.display = 'none';
+      spotifyEq.style.display = 'none';
       return;
     }
     if (!data.title) {
       spotifyLabel.textContent = 'rien d\'écouté récemment';
       spotifyLink.style.display = 'none';
+      spotifyEq.style.display = 'none';
       return;
     }
     spotifyLabel.textContent = data.is_playing ? 'écoute en ce moment :' : 'dernier morceau écouté :';
     spotifyLink.textContent = `${data.title} — ${data.artist}`;
     spotifyLink.href = data.url || '#';
+    spotifyEq.style.display = data.is_playing ? 'inline-flex' : 'none';
+    spotifyEq.classList.toggle('playing', !!data.is_playing);
   });
 </script>
 <script>
