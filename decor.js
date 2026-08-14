@@ -26,14 +26,16 @@
       main.prepend(img('decor-tasse', 'tasse.gif'));
     }
 
-    // ---- enveloppe timbrée, dépasse du coin bas de main ----
+    // ---- enveloppe timbrée, accrochée au titre "blog et billet d'humeur" ----
 if (main) {
   const isBilletsPage = window.location.pathname.includes('/billets/');
 
   if (isBilletsPage) {
     main.appendChild(img('decor-enveloppe-billet', 'enveloppe.png'));
   } else {
-    main.appendChild(img('decor-enveloppe', 'enveloppe.png'));
+    const titres = Array.from(main.querySelectorAll('h2'));
+    const h2Blog = titres.find(h => h.textContent.trim().toLowerCase().includes('billet'));
+    (h2Blog || main).appendChild(img('decor-enveloppe', 'enveloppe.png'));
   }
 }
 

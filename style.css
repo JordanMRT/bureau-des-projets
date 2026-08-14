@@ -91,6 +91,7 @@ h1:hover{ color:var(--accent); }
 .statut b{ color:var(--accent); }
 
 h2{
+  position:relative;
   font-family:var(--h1), monospace;
   font-size:0.85rem;
   text-transform:uppercase;
@@ -296,12 +297,12 @@ main, aside{ position:relative; }
 
 .decor-enveloppe{
   position:absolute;
-  top: 755px;
-  right: -10px;
-  width: 175px;
+  top: -5px;
+  right: -205px;
+  width: 155px;
   z-index: -1;
   pointer-events: none;
-  transform: rotate(10deg);
+  transform: rotate(8deg);
   image-rendering: pixelated;
 }
 
@@ -378,8 +379,8 @@ main, aside{ position:relative; }
   .decor-chat{ bottom: 35px; right: 25px;}
   .decor-carnet, .decor-carnet-billet {bottom: -70px; right: -5px;}
   .decor-tasse {top: -5px; right: 95px;}
-  .decor-enveloppe {width: 150px; top: 71%; right: -5px;}
   .decor-enveloppe-billet{ bottom: -45px; right: -5px; }
+  .decor-enveloppe{ top: -5px; right: -155px; width: 155px;}
   h2 {width: 210px;}
   
   main{ margin-bottom: 90px; } /* laisse la place au carnet qui déborde de 70px sous le footer, sans toucher aside */
