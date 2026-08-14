@@ -98,6 +98,7 @@ h2{
   margin:32px 0 10px;
   border-bottom:1px dashed var(--border-soft);
   padding-bottom:4px;
+  width: 450px;
 }
 
 ul.projets{
@@ -149,7 +150,7 @@ footer{
   color:var(--muted);
 }
 
-hr{ border:none; border-top:1px dashed var(--border-soft); margin:24px 0; }
+hr{ border:none; /*border-top:1px dashed var(--border-soft);*/ margin:24px 0; }
 
 /* ---- sidebar ---- */
 aside{
@@ -334,6 +335,7 @@ main, aside{ position:relative; }
   .decor-chat{ bottom: 35px; right: 25px;}
   .decor-carnet {bottom: -65px; right: -5px;}
   .decor-tasse {top: -5px; right: 95px;}
+  h2 {width: 210px;}
 }
 /* ==== égaliseur animé à côté du morceau Spotify ==== */
 
@@ -375,4 +377,40 @@ main, aside{ position:relative; }
 @keyframes eq-bounce{
   0%, 100% { height:3px; }
   50% { height:12px; }
+}
+
+/* ==== texture de fond et profondeur ==== */
+
+body{
+  position:relative;
+}
+body::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  background-image:url('bg-dot.png');
+  background-repeat:repeat;
+  background-size:50px 50px;
+  opacity:0.05;
+  z-index:0;
+  pointer-events:none;
+}
+.wrap{
+  position:relative;
+  z-index:1;
+}
+
+/* ombres douces et chaudes pour donner du relief aux blocs, plutôt qu'un gris/noir plat */
+.bloc,
+.bloc-moment,
+.statut,
+ul.projets,
+.billet{
+  box-shadow: 3px 4px 0 rgba(58, 42, 23, 0.12);
+}
+
+aside .bloc:hover{
+  box-shadow: 4px 5px 0 rgba(58, 42, 23, 0.16);
+  transform: translateY(-1px);
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
 }
