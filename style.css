@@ -319,8 +319,8 @@ main, aside{ position:relative; }
 
 .decor-carnet{
   position:absolute;
-  bottom: -15px;
-  right: -70px;
+  bottom: -35px;
+  right: -33px;
   width:60px;
   z-index:5;
   pointer-events:none;
@@ -461,4 +461,59 @@ aside .bloc:hover{
   box-shadow: 4px 5px 0 rgba(58, 42, 23, 0.16);
   transform: translateY(-1px);
   transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+/* ==== bulle de pensée du renard ==== */
+ 
+.renard{ pointer-events:auto; cursor:default; }
+ 
+.renard-bulle{
+  position:absolute;
+  bottom:55px;
+  right:-40px;
+  z-index:6;
+  opacity:0;
+  visibility:hidden;
+  transition:opacity 0.2s ease;
+  pointer-events:none;
+}
+.renard-bulle.visible{
+  opacity:1;
+  visibility:visible;
+}
+ 
+.bulle-petite, .bulle-moyenne{
+  position:absolute;
+  background:var(--card-bg);
+  border:1.5px solid var(--border);
+  border-radius:50%;
+}
+.bulle-petite{
+  width:6px; height:6px;
+  bottom:-8px; right:14px;
+}
+.bulle-moyenne{
+  width:12px; height:12px;
+  bottom:0px; right:4px;
+}
+ 
+.bulle-grande{
+  display:block;
+  position:relative;
+  background:var(--card-bg);
+  border:1.5px solid var(--border);
+  border-radius:50% 50% 48% 52% / 55% 60% 40% 45%;
+  padding:10px 14px;
+  font-family:var(--h1), monospace;
+  font-size:0.68rem;
+  color:var(--text);
+  width:100px;
+  text-align:center;
+  box-shadow:2px 3px 0 rgba(58,42,23,0.12);
+  margin-bottom:14px;
+}
+ 
+@media (max-width:680px){
+  .renard-bulle{ bottom:40px; right:-10px; }
+  .bulle-grande{ width:130px; font-size:0.64rem; }
 }

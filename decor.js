@@ -35,7 +35,9 @@ if (main) {
   } else {
     const titres = Array.from(main.querySelectorAll('h2'));
     const h2Blog = titres.find(h => h.textContent.trim().toLowerCase().includes('billet'));
-    (h2Blog || main).appendChild(img('decor-enveloppe', 'enveloppe.png'));
+    if (h2Blog) {
+      h2Blog.appendChild(img('decor-enveloppe', 'enveloppe.png'));
+    }
   }
 }
 
@@ -62,6 +64,38 @@ if (main) {
     // ---- plante en pot, coin bas-gauche de toute la page ----
     if (wrap) {
       wrap.appendChild(img('decor-plante', 'plante.png'));
+    }
+  
+    
+    // ---- bulle de pensée du renard, au survol ----
+    const renard = document.querySelector('.renard');
+    if (renard) {
+      const pensees = [
+        'je me demande si les trains sont à l\'heure',
+        'peut-être une pause café...',
+        'il faudrait écrire une lettre à quelqu\'un',
+        'chut, je réfléchis très fort.',
+        'j\'ai encore perdu un gant',
+        'le chat qui vit ici dort profondément'
+      ];
+      const pensee = pensees[Math.floor(Math.random() * pensees.length)];
+ 
+      const bulle = document.createElement('div');
+      bulle.className = 'renard-bulle';
+ 
+      const petite = document.createElement('span');
+      petite.className = 'bulle-petite';
+      const moyenne = document.createElement('span');
+      moyenne.className = 'bulle-moyenne';
+      const grande = document.createElement('span');
+      grande.className = 'bulle-grande';
+      grande.textContent = pensee;
+ 
+      bulle.append(petite, moyenne, grande);
+      renard.parentNode.insertBefore(bulle, renard.nextSibling);
+ 
+      renard.addEventListener('mouseenter', () => bulle.classList.add('visible'));
+      renard.addEventListener('mouseleave', () => bulle.classList.remove('visible'));
     }
   });
 })();
