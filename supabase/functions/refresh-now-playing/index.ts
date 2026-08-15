@@ -39,7 +39,7 @@ Deno.serve(async () => {
     const accessToken = await getAccessToken();
     const authHeader = { Authorization: `Bearer ${accessToken}` };
 
-    let payload = { is_playing: false, title: null, artist: null, url: null };
+    let payload = { is_playing: false, title: null, artist: null, url: null, cover_url: null };
 
     const nowRes = await fetch(NOW_PLAYING_URL, { headers: authHeader });
 
@@ -51,6 +51,7 @@ Deno.serve(async () => {
           title: track.item.name,
           artist: track.item.artists.map((a: { name: string }) => a.name).join(', '),
           url: track.item.external_urls.spotify,
+          cover_url: track.item.album?.images?.[0]?.url ?? null,
         };
       }
     }
@@ -65,6 +66,7 @@ Deno.serve(async () => {
           title: last.track.name,
           artist: last.track.artists.map((a: { name: string }) => a.name).join(', '),
           url: last.track.external_urls.spotify,
+          cover_url: last.track.album?.images?.[0]?.url ?? null,
         };
       }
     }

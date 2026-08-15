@@ -44,9 +44,16 @@
       <h4>statut</h4>
       <span class="dot" id="statut-dot"></span><span id="statut-texte">en ligne</span>
       <div id="statut-message" style="margin-top:4px; color:var(--muted); display:none;"></div>
-      <div style="margin-top: 8px; color: var(--muted); border-top: 1px dashed var(--border); padding-top: 10px;">
+      </div>
+      <div class="bloc-spotify">
+      <div style="color: var(--muted);">
         <span id="spotify-label">écoute en ce moment :</span><br>
-        <a href="#" id="spotify-link" target="_blank">[chargement…]</a><span class="eq" id="spotify-eq" style="display:none;"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span>
+        <div style="display:flex; align-items:center; gap:8px; margin-top:4px;">
+          <img id="spotify-cover" src="" alt="" style="display:none;">
+          <span>
+            <a href="#" id="spotify-link" target="_blank">[chargement…]</a><span class="eq" id="spotify-eq" style="display:none;"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span>
+          </span>
+          </div>
       </div>
     </div>
 
@@ -126,12 +133,14 @@
       const spotifyLabel = document.getElementById('spotify-label');
       const spotifyLink = document.getElementById('spotify-link');
       const spotifyEq = document.getElementById('spotify-eq');
+      const spotifyCover = document.getElementById('spotify-cover');
       if (!spotifyLabel) return;
-
+ 
       if (!data || !data.title) {
         spotifyLabel.textContent = data ? 'rien d\'écouté récemment' : 'spotify pas encore branché';
         spotifyLink.style.display = 'none';
         spotifyEq.style.display = 'none';
+        spotifyCover.style.display = 'none';
         return;
       }
       spotifyLabel.textContent = data.is_playing ? 'écoute en ce moment :' : 'dernier morceau écouté :';
@@ -139,6 +148,14 @@
       spotifyLink.href = data.url || '#';
       spotifyEq.style.display = data.is_playing ? 'inline-flex' : 'none';
       spotifyEq.classList.toggle('playing', !!data.is_playing);
+ 
+      if (data.cover_url) {
+        spotifyCover.src = data.cover_url;
+        spotifyCover.alt = `pochette de ${data.title}`;
+        spotifyCover.style.display = 'block';
+      } else {
+        spotifyCover.style.display = 'none';
+      }
     });
 
     // ---- date de dernière mise à jour (dernier commit GitHub) ----

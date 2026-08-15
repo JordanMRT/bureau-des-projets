@@ -191,13 +191,16 @@ aside{
   top: 10%;
   position: relative;
 }
-aside .bloc{
+aside .bloc, .bloc-spotify{
   position:relative;
   border:1px solid var(--border);
   background:var(--card-bg);
   padding:12px;
   margin-bottom:16px;
 }
+
+.bloc-spotify { border-radius: 10px;}
+
 aside .bloc h4{
   margin:0 0 8px;
   font-size:0.72rem;
@@ -399,6 +402,16 @@ main, aside{ position:relative; }
 }
 /* ==== égaliseur animé à côté du morceau Spotify ==== */
 
+#spotify-cover{
+  width:50px;
+  height:50px;
+  margin-right: 2px;
+  object-fit:cover;
+  border:1px solid var(--border);
+  flex-shrink:0;
+  border-radius: 10px;
+}
+
 .eq{
   display:inline-flex;
   align-items:flex-end;
@@ -465,7 +478,8 @@ body::before{
 .bloc-moment,
 .statut,
 ul.projets,
-.billet{
+.billet,
+.bloc-spotify{
   box-shadow: 3px 4px 0 rgba(58, 42, 23, 0.12);
 }
 
