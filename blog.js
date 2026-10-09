@@ -14,6 +14,7 @@
 
 (function () {
   const BASE = document.currentScript.src.replace(/blog\.js$/, '');
+  const echapper = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
   document.addEventListener('DOMContentLoaded', () => {
     const conteneurs = document.querySelectorAll('.billets-liste');
@@ -30,8 +31,8 @@
 
           conteneur.innerHTML = aAfficher.map(b => `
     <div class="billet">
-      <span class="date">${b.date_affichee}</span>
-      <h3><a href="${BASE}billets/${b.slug}.html">${b.titre}</a></h3>
+      <span class="date">${echapper(b.date_affichee)}</span>
+      <h3><a href="${BASE}billets/${encodeURIComponent(b.slug)}.html">${echapper(b.titre)}</a></h3>
     </div>`).join('\n');
         });
       })

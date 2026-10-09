@@ -4,23 +4,23 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!--
-  GABARIT POUR UN NOUVEAU BILLET — 3 ÉTAPES :
+  GABARIT D'UN BILLET — 3 ÉTAPES :
 
   1. Copie ce fichier dans /billets/, renomme-le avec le slug de ton article
      (ex: mon-nouveau-billet.html)
-  2. Remplace le titre (ligne <h2>), la date affichée, et le texte de
-     l'article entre les balises <!--LE TEXTE DE L'ARTICLE... et </ul>
+  2. Remplace le titre (<h2>), la date affichée, et le texte de l'article
+     à l'intérieur de <div class="billet-corps">
   3. Ajoute une entrée dans billets/billets.json avec le même slug, le titre
      et la date — le billet apparaîtra automatiquement sur index.html et
      billets.html, sans toucher à aucune autre page.
 
-  Le reste (bandeau, aside, scripts) est injecté automatiquement par
-  commun.js et decor.js, rien à modifier ici.
+  Le reste (header, bandeau "en ce moment", pied de page, sidebar) est
+  injecté automatiquement par commun.js, rien à modifier ici.
 -->
 <title>bureau des projets - blog</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Advent+Pro:ital,wght@0,100..900;1,100..900&family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Bebas+Neue&family=Public+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../style.css">
 <link rel="shortcut icon" type="image/png" href="../favicon.png"/>
 </head>
@@ -29,27 +29,13 @@
 
   <main>
 
-    <h1>bureau des projets</h1>
-    <p class="tagline">le site perso de Jordan Mrt.</p>
-
-<div class="statut">en ce moment : <b id="statut-live">chargement…</b>
-<img class="renard" src="../assets/decor/renard.gif" alt="petit renard, mascotte du site">
-</div>
-
     <h2>Titre du billet</h2>
-        <p class="tagline-date">le [jour] [mois] [année]</p>
-    <ul class="projets">
-      <!--LE TEXTE DE L'ARTICLE COMMENCE ICI-->
-        <p>Écris ton article ici, un paragraphe par balise &lt;p&gt;.</p>
-        <p>Pour une image : &lt;img class="blog" src="../assets/blog/nom-du-fichier.png"&gt;</p>
-    </ul>
+    <p class="tagline-date">le [jour] [mois] [année]</p>
+    <div class="billet-corps">
+      <p>Écris ton article ici, un paragraphe par balise &lt;p&gt;.</p>
+      <p>Pour une image : &lt;img class="blog" src="../assets/blog/nom-du-fichier.png"&gt;</p>
+    </div>
     <p class="tagline-signature">par Jordan Mrt</p>
-
-    <hr>
-
-    <footer>
-  fait à la main, sans framework — dernière mise à jour le <span id="derniere-maj">chargement…</span>
-</footer>
 
   </main>
 
@@ -58,7 +44,6 @@
 </div>
 
 <script src="../commun.js"></script>
-<script src="../decor.js"></script>
 
 </body>
 </html>

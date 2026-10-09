@@ -1,18 +1,24 @@
-// commun.js — sidebar (aside), statut, spotify, "en ce moment" et date de
-// mise à jour, injectés automatiquement sur toute page qui charge ce fichier.
-// Un seul endroit à modifier pour changer un lien de la sidebar ou une clé
+// commun.js — header, bandeau "en ce moment" (avec le renard), pied de page,
+// sidebar (aside), statut, spotify et date de mise à jour, injectés
+// automatiquement sur toute page qui charge ce fichier.
+// Un seul endroit à modifier pour changer un lien, un texte commun ou une clé
 // Supabase, plutôt que de répéter le même bloc sur chaque page HTML.
-// (même principe que decor.js, à charger juste avant lui)
 //
-// Inclusion, juste avant </body>, AVANT decor.js :
+// Une page n'a besoin que de <main> (son contenu) et <aside></aside>.
+// Inclusion, juste avant </body> :
 //   pages à la racine    -> <script src="commun.js"></script>
 //   pages dans /billets/  -> <script src="../commun.js"></script>
 //
-// Pour changer un lien de nav, un lien "ailleurs" ou un site que t'aimes :
-// modifie juste le bloc ASIDE_HTML juste en dessous, ça se répercute partout.
+// Pour changer un lien de nav ou un lien externe : modifie PAGES ou
+// LIENS_EXTERNES juste en dessous, ça se répercute dans le header ET la sidebar.
 
 (function () {
   const BASE = document.currentScript.src.replace(/commun\.js$/, '');
+  const REPO = 'JordanMRT/bureau-des-projets';
+  const PORTFOLIO_URL = 'https://jordanmrt.github.io/';
+
+  // Exposé pour les autres scripts du site (ex. l'éditeur de billets)
+  window.BUREAU = { BASE, REPO };
 
   // Configuration Supabase — à remplir avec tes vraies valeurs
   // (visibles dans Project Settings > API sur ton dashboard Supabase)
@@ -36,11 +42,63 @@
     }
   }
 
+  // ---- liens : une seule liste, utilisée par le header ET la sidebar ----
+  const PAGES = [
+    { page: 'index.html',   label: 'accueil' },
+    { page: 'billets.html', label: 'tous les billets' },
+    { page: 'about.html',   label: 'à propos' },
+  ];
+  const LIENS_EXTERNES = [
+    { url: 'https://github.com/JordanMRT',    label: 'github' },
+    { url: 'http://instagram.com/jordan.mrt', label: 'instagram' },
+  ];
+
+  // ---- bandeau "en ce moment" et pied de page, communs à toutes les pages ----
+  const STATUT_HTML = `
+    <div class="statut">en ce moment : <b id="statut-live">chargement…</b>
+    <img class="renard" src="${BASE}assets/decor/renard.gif" alt="petit renard, mascotte du site">
+    </div>
+  `;
+  const FOOTER_HTML = `
+    <hr>
+
+    <footer>
+      fait à la main, sans framework — dernière mise à jour le <span id="derniere-maj">chargement…</span>
+    </footer>
+  `;
+
+  // ---- header : logo, statut et menu. Modifie ici pour que ça change PARTOUT ----
+  function construireHeader() {
+    const chemin = location.pathname;
+    const fichier = chemin.split('/').pop() || 'index.html';
+    const dansBillets = chemin.includes('/billets/');
+    const actif = page => {
+      const estActif = page === 'billets.html' ? (fichier === page || dansBillets) : fichier === page;
+      return estActif ? ' actif' : '';
+    };
+    return `
+      <div class="header-haut">
+        <button class="header-dots" type="button" aria-label="aller à la colonne latérale">
+          <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        </button>
+        <a class="header-logo" href="${BASE}index.html">bureau des projets</a>
+        <div class="header-droite">
+          <span class="header-statut"><span class="dot" id="header-dot"></span><span id="header-statut-texte">en ligne</span></span>
+          <a class="header-pilule" href="${PORTFOLIO_URL}" target="_blank">mon portfolio</a>
+        </div>
+      </div>
+      <nav class="header-menu">
+        <div class="header-menu-liste">
+          ${PAGES.map(p => `<a class="principal${actif(p.page)}" href="${BASE}${p.page}">${p.label}</a>`).join('\n          ')}
+          <span class="header-sep"></span>
+          ${LIENS_EXTERNES.map(l => `<a href="${l.url}" target="_blank">${l.label}</a>`).join('\n          ')}
+        </div>
+      </nav>`;
+  }
+
   // ---- contenu de la sidebar : modifie ici pour que ça change PARTOUT ----
   const ASIDE_HTML = `
     <div class="bloc">
-      <img class="liane-coin-tr" src="${BASE}assets/decor/liane-coin.png" alt="">
-      <img class="liane-coin-bl" src="${BASE}assets/decor/liane-coin.png" alt="">
       <h4>statut</h4>
       <span class="dot" id="statut-dot"></span><span id="statut-texte">en ligne</span>
       <div id="statut-message" style="margin-top:4px; color:var(--muted); display:none;"></div>
@@ -58,44 +116,55 @@
     </div>
 
     <div class="bloc">
-      <img class="liane-coin-br" src="${BASE}assets/decor/liane-coin.png" alt="">
-      <img class="liane-coin-tl" src="${BASE}assets/decor/liane-coin.png" alt="">
       <h4>navigation</h4>
       <ul>
-        <li><a href="https://jordanmrt.github.io/bureau-des-projets/">accueil</a></li>
-        <li><a href="https://jordanmrt.github.io/bureau-des-projets/billets.html">tous les billets</a></li>
-        <li><a href="https://jordanmrt.github.io/bureau-des-projets/about.html">à propos</a></li>
+        ${PAGES.map(p => `<li><a href="${BASE}${p.page}">${p.label}</a></li>`).join('\n        ')}
       </ul>
     </div>
 
     <div class="bloc">
-      <img class="liane-coin-tr" src="${BASE}assets/decor/liane-coin.png" alt="">
-      <img class="liane-coin-bl" src="${BASE}assets/decor/liane-coin.png" alt="">
       <h4>liens externes</h4>
       <ul>
-        <li><a href="https://jordanmrt.github.io/" target="_blank">bento des projets</a></li>
-        <li><a href="https://github.com/JordanMRT" target="_blank">github</a></li>
-        <li><a href="http://instagram.com/jordan.mrt" target="_blank">instagram</a></li>
+        <li><a href="${PORTFOLIO_URL}" target="_blank">bento des projets</a></li>
+        ${LIENS_EXTERNES.map(l => `<li><a href="${l.url}" target="_blank">${l.label}</a></li>`).join('\n        ')}
         <!--<li><a href="#">rss (à venir)</a></li>-->
       </ul>
     </div>
 
     <div class="bloc">
-      <img class="liane-coin-br" src="${BASE}assets/decor/liane-coin.png" alt="">
-      <img class="liane-coin-tl" src="${BASE}assets/decor/liane-coin.png" alt="">
-      <h4>sites que j'aime</h4>
+      <h4>Inspirations & ressources</h4>
       <ul>
-        <li><a href="#">[à compléter]</a></li>
+        <li><a href="https://www.humanite.fr/" target="_blank">L'Humanité</a></li>
+        <li><a href="https://jlm27.fr/p/5AGre8fWVQ" target="_blank">Parrainer la campagne de Jean-Luc Mélenchon</a></li>
       </ul>
     </div>
   `;
 
   document.addEventListener('DOMContentLoaded', () => {
+    // ---- injection du header ----
+    if (!document.querySelector('.site-header')) {
+      const header = document.createElement('header');
+      header.className = 'site-header';
+      header.innerHTML = construireHeader();
+      document.body.insertBefore(header, document.body.firstChild);
+      header.querySelector('.header-dots').addEventListener('click', () => {
+        const colonne = document.querySelector('aside');
+        if (colonne) colonne.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    }
+
     // ---- injection de la sidebar ----
     const aside = document.querySelector('aside');
     if (aside && !aside.dataset.rempli) {
       aside.innerHTML = ASIDE_HTML;
       aside.dataset.rempli = 'oui';
+    }
+
+    // ---- bandeau "en ce moment" et pied de page ----
+    const main = document.querySelector('main');
+    if (main && !main.querySelector('.statut')) {
+      main.insertAdjacentHTML('afterbegin', STATUT_HTML);
+      main.insertAdjacentHTML('beforeend', FOOTER_HTML);
     }
 
     // ---- "en ce moment" (bandeau du haut) ----
@@ -121,6 +190,11 @@
         dot.style.background = '#a8a094';
         texte.textContent = 'hors ligne';
       }
+
+      const headerDot = document.getElementById('header-dot');
+      const headerTexte = document.getElementById('header-statut-texte');
+      if (headerDot) headerDot.style.background = data.online ? 'var(--dot)' : '#a8a094';
+      if (headerTexte) headerTexte.textContent = data.online ? 'en ligne' : 'hors ligne';
 
       if (data.message) {
         message.textContent = data.message;
@@ -161,7 +235,7 @@
     // ---- date de dernière mise à jour (dernier commit GitHub) ----
     const derniereMaj = document.getElementById('derniere-maj');
     if (derniereMaj) {
-      fetch('https://api.github.com/repos/JordanMRT/bureau-des-projets/commits?per_page=1')
+      fetch(`https://api.github.com/repos/${REPO}/commits?per_page=1`)
         .then(r => r.json())
         .then(commits => {
           const date = new Date(commits[0].commit.committer.date);
@@ -172,6 +246,37 @@
         .catch(() => {
           // si l'API GitHub est indisponible, le texte "chargement…" reste affiché
         });
+    }
+
+    // ---- bulle de pensée du renard, au survol ----
+    const renard = document.querySelector('.renard');
+    if (renard) {
+      const pensees = [
+        'je me demande si les trains sont à l\'heure',
+        'peut-être une pause café...',
+        'il faudrait écrire une lettre à quelqu\'un',
+        'chut, je réfléchis très fort.',
+        'j\'ai encore perdu un gant',
+        'le chat qui vit ici dort profondément'
+      ];
+      const pensee = pensees[Math.floor(Math.random() * pensees.length)];
+ 
+      const bulle = document.createElement('div');
+      bulle.className = 'renard-bulle';
+ 
+      const petite = document.createElement('span');
+      petite.className = 'bulle-petite';
+      const moyenne = document.createElement('span');
+      moyenne.className = 'bulle-moyenne';
+      const grande = document.createElement('span');
+      grande.className = 'bulle-grande';
+      grande.textContent = pensee;
+ 
+      bulle.append(petite, moyenne, grande);
+      renard.parentNode.insertBefore(bulle, renard.nextSibling);
+ 
+      renard.addEventListener('mouseenter', () => bulle.classList.add('visible'));
+      renard.addEventListener('mouseleave', () => bulle.classList.remove('visible'));
     }
   });
 })();

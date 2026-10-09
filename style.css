@@ -1,15 +1,18 @@
 :root{
-  --bg: #fdf3df;
-  --text: #3a2a17;
-  --muted: #8a6d47;
-  --border: #3a2a17;
-  --border-soft: #d8b788;
-  --card-bg: #f8e6bf;
-  --accent: #d9711f;
-  --accent-visited: #b8552f;
+  --bg: #e8f1f3;
+  --text: #1f1433;
+  --muted: #6b6785;
+  --border: #1f1433;
+  --border-soft: #b9b3d6;
+  --card-bg: #f7fbfc;
+  --accent: #e8002f;
+  --violet: #4E2B97;
+  --accent-visited: #4E2B97;
   --dot: #6f9c3e;
-  --h1: "IBM Plex Mono", monospace;
-  --display : "Advent Pro"
+  --h1: "Public Sans", sans-serif;
+  --display: "Public Sans", sans-serif;
+  --titre: "Bebas Neue", sans-serif;
+  --logo: "Abril Fatface", serif;
 }
 
 body{
@@ -18,9 +21,10 @@ body{
   background:var(--bg);
   color:var(--text);
   font-family: var(--display), serif;
-  font-size: 22px;
-  font-weight: 500;
+  font-size: 17px;
+  font-weight: 400;
   line-height:1.5;
+  position:relative;
 }
 a{ color:var(--accent); }
 a:visited{ color:var(--accent-visited); }
@@ -39,19 +43,6 @@ a:visited{ color:var(--accent-visited); }
   aside{ order:2; }
   main{ order:1; }
 }
-
-h1{
-  font-size:1.6rem;
-  margin:0 0 2px;
-  border-bottom:2px dashed var(--border);
-  text-transform: uppercase;
-  padding-bottom:8px;
-  display:inline-block;
-  transition:color 0.2s ease;
-  font-family: var(--display);
-  width: 140%;
-}
-h1:hover{ color:var(--accent); }
 
 ::selection{ background:var(--accent); color:var(--bg); }
 .tagline{
@@ -92,10 +83,12 @@ h1:hover{ color:var(--accent); }
 
 h2{
   position:relative;
-  font-family:var(--h1), monospace;
-  font-size:0.85rem;
+  font-family:var(--titre), sans-serif;
+  font-weight:400;
+  color:var(--accent);
+  font-size:1.5rem;
   text-transform:uppercase;
-  letter-spacing:0.06em;
+  letter-spacing:0.03em;
   margin:32px 0 10px;
   border-bottom:1px dashed var(--border-soft);
   padding-bottom:4px;
@@ -129,10 +122,11 @@ h2{
   border: 1px solid var(--border);
   align-content: baseline;
   object-fit: cover;
-  box-shadow: 3px 4px 0 rgba(58, 42, 23, 0.12);
+  box-shadow: 3px 4px 0 rgba(78, 43, 151, 0.12);
 }
 
-ul.projets{
+ul.projets,
+.billet-corps{
   list-style:none;
   padding: .9rem;
   margin: 0;
@@ -146,8 +140,8 @@ ul.projets li{
   font-family: var(--h1);
 }
 ul.projets li:last-child{ border-bottom:none; }
-ul.projets a{ font-weight:500; text-decoration:none; }
-ul.projets a:hover{ text-decoration:underline; }
+ul.projets a, .billet-corps a{ font-weight:500; text-decoration:none; }
+ul.projets a:hover, .billet-corps a:hover{ text-decoration:underline; }
 ul.projets .desc{
   display:block;
   font-size:0.85rem;
@@ -167,7 +161,7 @@ ul.projets .desc{
   font-size:0.75rem;
   color:var(--muted);
 }
-.billet h3{ font-size:1.05rem; margin:2px 0 4px; }
+.billet h3{ font-family:var(--titre), sans-serif; font-weight:400; letter-spacing:0.02em; font-size:1.4rem; margin:2px 0 4px; }
 .billet h3 a{ text-decoration:none; }
 .billet h3 a:hover{ text-decoration:underline; }
 .billet p{ margin:0; font-size:0.92rem; color:var(--text); }
@@ -208,7 +202,7 @@ aside .bloc h4{
   letter-spacing:0.06em;
   color:var(--muted);
 }
-aside ul{ list-style:none; margin:0; padding:0; }
+aside ul{ list-style:none; margin:0; padding:0; text-transform: capitalize; }
 aside ul li{ margin-bottom:6px; }
 aside ul li a{ text-decoration:none; }
 aside ul li a:hover{ text-decoration:underline; }
@@ -219,54 +213,6 @@ aside ul li a:hover{ text-decoration:underline; }
   margin-right:5px;
 }
 
- /* ---- liane par bloc : enroulée sur le coin supérieur droit, ancrée au bloc ---- */
-  .liane-coin-tr {
-    position:absolute;
-    top:-9px;
-    right:-5px;
-    width:52px;
-    height:52px;
-    z-index:3;
-    pointer-events:none;
-    image-rendering:pixelated;
-  }
-
-  .liane-coin-bl {
-    position:absolute;
-    bottom:-5px;
-    left:-5px;
-    width:52px;
-    height:52px;
-    z-index:3;
-    pointer-events:none;
-    rotate: -180deg;
-    image-rendering: pixelated;
-  }
-
-  .liane-coin-tl {
-    position:absolute;
-    top:-5px;
-    left:-5px;
-    width:52px;
-    height:52px;
-    z-index:3;
-    pointer-events:none;
-    rotate: -90deg;
-    image-rendering:pixelated;
-  }
-
-  .liane-coin-br {
-    position:absolute;
-    bottom:-5px;
-    right:-9px;
-    width:52px;
-    height:52px;
-    z-index:3;
-    pointer-events:none;
-    rotate: 90deg;
-    image-rendering: pixelated;
-  }
-
   /* ---- le renard, posé sur le coin bas-droit du bloc "en ce moment" ---- */
   .renard{
     position:absolute;
@@ -274,131 +220,24 @@ aside ul li a:hover{ text-decoration:underline; }
     right:-45px;
     width:64px;
     z-index:4;
-    pointer-events:none;
-  }
-
-  .note{
-    max-width:600px;
-    margin-top:240px;
-    font-size:0.8rem;
-    color:var(--muted);
-    line-height:1.6;
   }
 
 @media (max-width:680px){
-  h1{ width: 100%;}
   .renard {
     position: absolute;
     bottom: -5px;
     right: -17px;
     width: 64px;
-    z-index: 4;
-    pointer-events: none;}
+    z-index: 4;}
     #psst {display: none;}
   }
 
-/* ==== éléments décoratifs injectés par decor.js ==== */
+/* ==== positionnement de base ==== */
 
 main, aside{ position:relative; }
 
-.decor-tasse{
-  position:absolute;
-  top: -5px;
-  right: 385px;
-  width:38px;
-  z-index:5;
-  pointer-events:none;
-}
-
-.decor-enveloppe{
-  position:absolute;
-  top: -5px;
-  right: -205px;
-  width: 155px;
-  z-index: -1;
-  pointer-events: none;
-  transform: rotate(8deg);
-  image-rendering: pixelated;
-}
-
-.decor-enveloppe-billet{
-  position:absolute;
-  top: 240px;
-  right: -10px;
-  width: 175px;
-  z-index: -1;
-  pointer-events: none;
-  transform: rotate(10deg);
-  image-rendering: pixelated;
-}
-
-.decor-carnet{
-  position:absolute;
-  bottom: -35px;
-  right: -33px;
-  width:60px;
-  z-index:5;
-  pointer-events:none;
-}
-
-.decor-carnet-billet{
-  position:absolute;
-  bottom: -45px;
-  right: 0px;
-  width:60px;
-  z-index:5;
-  pointer-events:none;
-}
-
-.decor-fenetre{
-  position:absolute;
-  bottom: -110px;
-  right: 0px;
-  width: 215px;
-  z-index:5;
-  pointer-events:none;
-  image-rendering: pixelated;
-  border: 1px dashed var(--muted);
-  box-shadow: 4px 5px 0 rgba(58, 42, 23, 0.16);
-  margin-bottom: 10px;
-}
-
-.decor-chat{
-  position:absolute;
-  bottom: 15px;
-  right: 65px;
-  width:48px;
-  z-index:5;
-  pointer-events:none;
-}
-
-.decor-plante{
-  position:fixed;
-  bottom:0;
-  left:10px;
-  width:58px;
-  z-index:5;
-  pointer-events:none;
-  transform-origin:bottom center;
-  animation:decor-frisson 2.5s ease-in-out infinite;
-  image-rendering: pixelated;
-}
-
-@keyframes decor-frisson{
-  0%, 100% { transform:rotate(0deg); }
-  50% { transform:rotate(2deg); }
-}
-
 @media (max-width:680px){
-  .decor-plante, .decor-fenetre{ display:none; } /* trop à l'étroit sur mobile, on l'enlève plutôt que de la faire chevaucher le contenu */
-  .decor-chat{ bottom: 35px; right: 25px;}
-  .decor-carnet, .decor-carnet-billet {bottom: -70px; right: -5px;}
-  .decor-tasse {top: -5px; right: 95px;}
-  .decor-enveloppe-billet{ bottom: -45px; right: -5px; }
-  .decor-enveloppe{ top: -5px; right: -155px; width: 155px;}
   h2 {width: 210px;}
-  
-  main{ margin-bottom: 90px; } /* laisse la place au carnet qui déborde de 70px sous le footer, sans toucher aside */
 }
 /* ==== égaliseur animé à côté du morceau Spotify ==== */
 
@@ -454,9 +293,6 @@ main, aside{ position:relative; }
 
 /* ==== texture de fond et profondeur ==== */
 
-body{
-  position:relative;
-}
 body::before{
   content:'';
   position:fixed;
@@ -475,16 +311,16 @@ body::before{
 
 /* ombres douces et chaudes pour donner du relief aux blocs, plutôt qu'un gris/noir plat */
 .bloc,
-.bloc-moment,
 .statut,
 ul.projets,
+.billet-corps,
 .billet,
 .bloc-spotify{
-  box-shadow: 3px 4px 0 rgba(58, 42, 23, 0.12);
+  box-shadow: 3px 4px 0 rgba(78, 43, 151, 0.12);
 }
 
 aside .bloc:hover{
-  box-shadow: 4px 5px 0 rgba(58, 42, 23, 0.16);
+  box-shadow: 4px 5px 0 rgba(78, 43, 151, 0.16);
   transform: translateY(-1px);
   transition: box-shadow 0.15s ease, transform 0.15s ease;
 }
@@ -535,11 +371,152 @@ aside .bloc:hover{
   color:var(--text);
   width:100px;
   text-align:center;
-  box-shadow:2px 3px 0 rgba(58,42,23,0.12);
+  box-shadow:2px 3px 0 rgba(78, 43, 151,0.12);
   margin-bottom:14px;
 }
  
 @media (max-width:680px){
   .renard-bulle{ bottom:40px; right:-10px; }
   .bulle-grande{ width:130px; font-size:0.64rem; }
+}
+
+/* ==== header façon presse (injecté par commun.js) ==== */
+
+.site-header{
+  position:relative;
+  z-index:2;
+  margin:-24px -16px 28px;
+  padding:0 16px;
+}
+
+.header-haut{
+  max-width:900px;
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  align-items:center;
+  padding:20px 0 14px;
+}
+
+.header-dots {
+  justify-self: start;
+  display: grid;
+  grid-template-columns: repeat(3, 8px);
+  grid-template-rows: repeat(3, 8px);
+  gap: 3px;
+  padding: 6px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.header-dots span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+/* Les six pétales */
+.header-dots span:nth-child(1) { grid-area: 1 / 2; }
+.header-dots span:nth-child(2) { grid-area: 1 / 3; }
+.header-dots span:nth-child(3) { grid-area: 2 / 3; }
+.header-dots span:nth-child(4) { grid-area: 3 / 2; }
+.header-dots span:nth-child(5) { grid-area: 3 / 1; }
+.header-dots span:nth-child(6) { grid-area: 2 / 1; }
+
+/* Le cœur de la fleur */
+.header-dots span:nth-child(7) {
+  grid-area: 2 / 2;
+  background: var(--violet);
+}
+
+.header-logo,
+.header-logo:visited{
+  font-family:var(--logo), serif;
+  font-size:2.6rem;
+  line-height:1;
+  letter-spacing:-0.02em;
+  color:var(--accent);
+  text-decoration:none;
+  text-align:center;
+  text-transform: uppercase;
+}
+
+.header-droite{
+  justify-self:end;
+  display:flex;
+  align-items:center;
+  gap:16px;
+  font-family:var(--h1), sans-serif;
+  font-size:0.78rem;
+}
+.header-statut{ color:var(--muted); white-space:nowrap; }
+
+.header-pilule,
+.header-pilule:visited{
+  border:2px solid var(--violet);
+  border-radius:999px;
+  padding:4px 16px;
+  color:var(--violet);
+  font-weight:700;
+  text-decoration:none;
+  white-space:nowrap;
+  transition:background 0.15s ease, color 0.15s ease;
+}
+.header-pilule:hover{
+  background:var(--violet);
+  color:var(--bg);
+}
+
+.header-menu{ border-bottom:1px solid var(--violet); }
+.header-menu-liste{
+  max-width:900px;
+  margin:0 auto;
+  display:flex;
+  align-items:center;
+  gap:28px;
+  padding:10px 0;
+  overflow-x:auto;
+  white-space:nowrap;
+  scrollbar-width:none;
+  font-family:var(--h1), sans-serif;
+  font-size:0.8rem;
+}
+.header-menu-liste::-webkit-scrollbar{ display:none; }
+
+.header-menu a,
+.header-menu a:visited{
+  color:var(--muted);
+  font-weight:500;
+  text-decoration:none;
+}
+.header-menu a.principal,
+.header-menu a.principal:visited{
+  color:var(--text);
+  font-weight:700;
+}
+.header-menu a.actif,
+.header-menu a.actif:visited{
+  text-decoration:underline;
+  text-decoration-color:var(--accent);
+  text-decoration-thickness:2px;
+  text-underline-offset:6px;
+}
+.header-menu a:hover{
+  text-decoration:underline;
+  text-decoration-color:var(--violet);
+  text-decoration-thickness:2px;
+  text-underline-offset:6px;
+}
+.header-sep{
+  flex-shrink:0;
+  width:1px;
+  height:22px;
+  background:var(--violet);
+}
+
+@media (max-width:680px){
+  .header-haut{ padding:16px 0 10px; }
+  .header-logo, .header-logo:visited{ font-size:1.7rem; }
+  .header-droite{ display:none; }
+  .header-menu-liste{ gap:20px; }
 }
