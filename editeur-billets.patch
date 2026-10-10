@@ -1,0 +1,1692 @@
+diff --git a/admin/admin.css b/admin/admin.css
+new file mode 100644
+index 0000000..8de4f87
+--- /dev/null
++++ b/admin/admin.css
+@@ -0,0 +1,182 @@
++/* admin/admin.css — styles de la page d'écriture (n'affecte aucune autre page) */
++
++[hidden]{ display:none !important; }
++
++.wrap-admin{ grid-template-columns:minmax(0, 1fr); } /* minmax(0,…) : la barre d'outils défile au lieu d'élargir la page */
++.admin{ min-width:0; }
++.admin h2{ width:auto; }
++.admin h3{
++  font-family:var(--titre), sans-serif;
++  font-weight:400;
++  font-size:1.3rem;
++  letter-spacing:0.02em;
++  text-transform:uppercase;
++  color:var(--accent);
++  margin:0 0 0.6rem;
++}
++
++/* ---- panneaux, champs, boutons ---- */
++
++.panneau{
++  background:var(--card-bg);
++  border:1px dashed var(--border);
++  padding:0.9rem 1rem;
++  margin-bottom:1rem;
++  box-shadow:4px 5px 0 rgba(78, 43, 151, 0.12);
++  font-family:var(--h1), sans-serif;
++  font-size:0.9rem;
++}
++.panneau p:first-child{ margin-top:0; }
++
++.champ{ display:block; margin:0 0 0.8rem; }
++.champ span{
++  display:block;
++  margin-bottom:0.2rem;
++  font-size:0.75rem;
++  font-weight:700;
++  letter-spacing:0.06em;
++  text-transform:uppercase;
++  color:var(--muted);
++}
++.champ input{
++  width:100%;
++  box-sizing:border-box;
++  padding:0.5rem 0.6rem;
++  border:1px solid var(--border);
++  background:#fff;
++  color:var(--text);
++  font-family:var(--h1), sans-serif;
++  font-size:1rem;
++}
++.champ input:focus,
++.zone-ecriture:focus{ outline:2px solid var(--violet); outline-offset:1px; }
++.deux-champs{ display:grid; grid-template-columns:1fr 2fr; gap:0 1rem; }
++.case{ display:block; margin-bottom:0.8rem; }
++
++.btn{
++  padding:0.4rem 1rem;
++  border:2px solid var(--violet);
++  border-radius:999px;
++  background:transparent;
++  color:var(--violet);
++  font-family:var(--h1), sans-serif;
++  font-size:0.85rem;
++  font-weight:700;
++  cursor:pointer;
++  transition:background 0.15s ease, color 0.15s ease;
++}
++.btn:hover{ background:var(--violet); color:var(--bg); }
++.btn-principal{ background:var(--violet); color:#fff; }
++.btn-principal:hover{ background:var(--accent); border-color:var(--accent); }
++.btn:disabled{ opacity:0.5; cursor:wait; }
++.btn.danger{ border-color:var(--accent); color:var(--accent); }
++.btn.danger:hover{ background:var(--accent); color:#fff; }
++
++.actions{ display:flex; flex-wrap:wrap; align-items:center; gap:0.6rem; margin:0 0 1rem; }
++.actions-fin{ margin-top:1rem; }
++.aide{ font-family:var(--h1), sans-serif; font-size:0.78rem; color:var(--muted); }
++
++.msg{
++  padding:0.5rem 0.8rem;
++  border:1px solid var(--border-soft);
++  background:#fff;
++  font-family:var(--h1), sans-serif;
++  font-size:0.88rem;
++}
++.msg.erreur{ border-color:var(--accent); color:var(--accent); }
++.msg.ok{ border-color:var(--dot); }
++
++details{ font-size:0.85rem; }
++details summary{ cursor:pointer; color:var(--violet); font-weight:700; }
++details ol{ padding-left:1.2rem; }
++code{ background:#fff; padding:0 0.25em; border:1px solid var(--border-soft); }
++
++/* ---- listes (billets, brouillons) ---- */
++
++.liste-admin{ list-style:none; margin:0; padding:0; }
++.liste-admin li{
++  display:flex;
++  flex-wrap:wrap;
++  align-items:center;
++  gap:0.4rem 0.8rem;
++  padding:0.5rem 0;
++  border-bottom:1px solid var(--border-soft);
++}
++.liste-admin li:last-child{ border-bottom:none; }
++.liste-admin .titre{ flex:1 1 14rem; font-weight:600; }
++.liste-admin .meta{ color:var(--muted); font-size:0.78rem; }
++.liste-admin .btn{ padding:0.15rem 0.7rem; font-size:0.78rem; }
++
++/* ---- onglets ---- */
++
++.onglets{ display:flex; gap:0.4rem; margin-bottom:0.6rem; }
++.onglet{
++  padding:0.3rem 1rem;
++  border:1px solid var(--border);
++  border-bottom:none;
++  background:transparent;
++  color:var(--muted);
++  font-family:var(--h1), sans-serif;
++  font-size:0.85rem;
++  cursor:pointer;
++}
++.onglet.actif{ background:var(--card-bg); color:var(--text); font-weight:700; }
++
++/* ---- barre d'outils ---- */
++
++.outils{
++  position:sticky;
++  top:0;
++  z-index:5;
++  background:var(--bg);
++  padding:0.4rem 0;
++}
++.barre{
++  display:flex;
++  align-items:center;
++  gap:0.6rem;
++  overflow-x:auto;
++  padding:0.35rem 0.5rem;
++  border:1px solid var(--border);
++  background:var(--card-bg);
++  scrollbar-width:none;
++}
++.barre::-webkit-scrollbar{ display:none; }
++.barre + .barre{ margin-top:0.3rem; }
++.groupe{ display:flex; flex-shrink:0; gap:0.2rem; padding-right:0.6rem; border-right:1px solid var(--border-soft); }
++.groupe:last-child{ border-right:none; padding-right:0; }
++.barre button{
++  flex-shrink:0;
++  min-width:2rem;
++  padding:0.3rem 0.55rem;
++  border:1px solid transparent;
++  background:transparent;
++  color:var(--text);
++  font-family:var(--h1), sans-serif;
++  font-size:0.8rem;
++  cursor:pointer;
++}
++.barre button:hover{ border-color:var(--border-soft); background:#fff; }
++.barre button.actif{ background:var(--violet); border-color:var(--violet); color:#fff; }
++.barre button.danger{ color:var(--accent); }
++.barre-image .etiquette{ flex-shrink:0; font-size:0.72rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:var(--violet); }
++
++/* ---- zone d'écriture (même rendu que le billet publié) ---- */
++
++.zone-ecriture{ min-height:55vh; margin-top:0.4rem; }
++.zone-ecriture figure.choisie{ outline:2px solid var(--violet); outline-offset:3px; }
++.zone-ecriture figcaption:empty::before{ content:'Ajouter une légende…'; color:var(--border-soft); }
++.zone-ecriture figcaption:focus{ outline:1px dashed var(--violet); }
++
++/* ---- aperçu ---- */
++
++#cadre-apercu{
++  width:100%;
++  min-height:60vh;
++  border:1px solid var(--border);
++  background:var(--bg);
++}
++
++@media (max-width:680px){
++  .deux-champs{ grid-template-columns:1fr; }
++}
+diff --git a/admin/app.js b/admin/app.js
+new file mode 100644
+index 0000000..9764b9d
+--- /dev/null
++++ b/admin/app.js
+@@ -0,0 +1,470 @@
++// admin/app.js — l'interface : connexion, liste des billets, brouillons,
++// édition, aperçu et publication (un seul commit GitHub par action).
++(function () {
++  const $ = id => document.getElementById(id);
++  const CLE_BROUILLONS = 'bdp-brouillons';
++
++  // billet en cours : slug de l'article déjà publié qu'on modifie (null = nouveau)
++  const courant = { slug: null, slugAMain: false };
++  let billets = [];
++  let minuteur = null;
++  let modifie = false; // le contenu a changé depuis l'ouverture ou la dernière publication
++
++  // ---------- petits outils ----------
++
++  function dire(texte, type) {
++    const el = $('message');
++    el.textContent = texte || '';
++    el.className = 'msg' + (type ? ' ' + type : '');
++    el.hidden = !texte;
++  }
++
++  function afficher(vue) {
++    ['connexion', 'liste', 'editeur'].forEach(v => { $('vue-' + v).hidden = v !== vue; });
++    window.scrollTo(0, 0);
++  }
++
++  const aujourdhui = () => {
++    const d = new Date();
++    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
++  };
++
++  const formaterDate = iso => new Date(iso + 'T12:00:00')
++    .toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
++
++  function element(balise, classe, texte) {
++    const el = document.createElement(balise);
++    if (classe) el.className = classe;
++    if (texte !== undefined) el.textContent = texte;
++    return el;
++  }
++
++  function bouton(texte, action, classe) {
++    const b = element('button', 'btn' + (classe ? ' ' + classe : ''), texte);
++    b.type = 'button';
++    b.addEventListener('click', action);
++    return b;
++  }
++
++  // ---------- connexion ----------
++
++  async function demarrer(token, durable) {
++    Github.token = token;
++    dire('Vérification du token…');
++    try {
++      await Github.verifier();
++    } catch (e) {
++      Github.token = null;
++      dire(Github.erreurLisible(e), 'erreur');
++      afficher('connexion');
++      return;
++    }
++    if (durable !== undefined) Github.memoriserToken(token, durable);
++    dire('');
++    ouvrirListe();
++  }
++
++  // ---------- liste des billets et des brouillons ----------
++
++  async function ouvrirListe() {
++    afficher('liste');
++    const ul = $('liste-billets');
++    ul.replaceChildren(element('li', 'meta', 'chargement…'));
++    try {
++      billets = await Github.listerBillets();
++    } catch (e) {
++      dire(Github.erreurLisible(e), 'erreur');
++      billets = [];
++    }
++    billets.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
++
++    ul.replaceChildren();
++    if (!billets.length) ul.appendChild(element('li', 'meta', 'aucun billet publié pour l\'instant.'));
++    billets.forEach(b => {
++      const li = element('li');
++      li.appendChild(element('span', 'titre', b.titre));
++      li.appendChild(element('span', 'meta', b.date_affichee || b.date || ''));
++      li.appendChild(bouton('modifier', () => modifierBillet(b.slug)));
++      const voir = element('a', 'btn', 'voir');
++      voir.href = `${window.BUREAU.BASE}billets/${encodeURIComponent(b.slug)}.html`;
++      voir.target = '_blank';
++      li.appendChild(voir);
++      li.appendChild(bouton('supprimer', () => supprimerBillet(b), 'danger'));
++      ul.appendChild(li);
++    });
++    afficherBrouillons();
++  }
++
++  // ---------- brouillons (stockés dans ce navigateur) ----------
++
++  function lireBrouillons() {
++    try { return JSON.parse(localStorage.getItem(CLE_BROUILLONS)) || {}; } catch (e) { return {}; }
++  }
++
++  function ecrireBrouillons(obj) {
++    try {
++      localStorage.setItem(CLE_BROUILLONS, JSON.stringify(obj));
++      return true;
++    } catch (e) {
++      $('info-brouillon').textContent = 'Brouillon trop lourd pour ce navigateur (images ?). Publie ou allège-le.';
++      return false;
++    }
++  }
++
++  const idBrouillon = () => courant.slug || 'nouveau';
++
++  function sauverBrouillon() {
++    const titre = $('champ-titre').value;
++    if (!titre.trim() && Editeur.estVide()) return;
++    const tous = lireBrouillons();
++    tous[idBrouillon()] = {
++      titre,
++      date: $('champ-date').value,
++      slug: $('champ-slug').value,
++      slugAMain: courant.slugAMain,
++      existant: courant.slug,
++      html: Editeur.brut(),
++      maj: Date.now(),
++    };
++    if (ecrireBrouillons(tous)) {
++      const h = new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
++      $('info-brouillon').textContent = `brouillon enregistré à ${h}`;
++    }
++  }
++
++  function supprimerBrouillon(id) {
++    const tous = lireBrouillons();
++    delete tous[id];
++    ecrireBrouillons(tous);
++  }
++
++  function afficherBrouillons() {
++    const tous = lireBrouillons();
++    const ids = Object.keys(tous);
++    $('bloc-brouillons').hidden = !ids.length;
++    const ul = $('liste-brouillons');
++    ul.replaceChildren();
++    ids.sort((a, b) => tous[b].maj - tous[a].maj).forEach(id => {
++      const b = tous[id];
++      const li = element('li');
++      li.appendChild(element('span', 'titre', b.titre || '(sans titre)'));
++      li.appendChild(element('span', 'meta', (b.existant ? 'modification de ' + b.existant : 'nouveau billet') + ' · ' + new Date(b.maj).toLocaleString('fr-FR', { dateStyle: 'short', timeStyle: 'short' })));
++      li.appendChild(bouton('reprendre', () => ouvrirEditeur(b)));
++      li.appendChild(bouton('jeter', () => {
++        if (confirm('Jeter ce brouillon ?')) { supprimerBrouillon(id); afficherBrouillons(); }
++      }, 'danger'));
++      ul.appendChild(li);
++    });
++  }
++
++  // ---------- édition ----------
++
++  // donnees : { titre, date, slug, slugAMain, existant, html }
++  function ouvrirEditeur(donnees) {
++    courant.slug = donnees.existant || null;
++    courant.slugAMain = !!donnees.slugAMain;
++    $('champ-titre').value = donnees.titre || '';
++    $('champ-date').value = donnees.date || aujourdhui();
++    $('champ-slug').value = donnees.slug || '';
++    $('champ-slug').disabled = !!courant.slug; // l'adresse d'un billet publié ne change pas
++    Editeur.charger(donnees.html || '');
++    $('info-brouillon').textContent = '';
++    modifie = false;
++    afficherOnglet('ecrire');
++    majCompteur();
++    dire('');
++    afficher('editeur');
++    $('champ-titre').focus();
++  }
++
++  function nouveauBillet() {
++    const tous = lireBrouillons();
++    if (tous.nouveau && confirm('Un brouillon de nouveau billet existe déjà. Le reprendre ?\n\n(Annuler = repartir d\'une page blanche, l\'ancien brouillon sera remplacé.)')) {
++      ouvrirEditeur(tous.nouveau);
++    } else {
++      ouvrirEditeur({});
++    }
++  }
++
++  async function modifierBillet(slug) {
++    const brouillon = lireBrouillons()[slug];
++    if (brouillon && confirm('Un brouillon existe pour ce billet. Le reprendre ?\n\n(Annuler = recharger la version publiée.)')) {
++      ouvrirEditeur(brouillon);
++      return;
++    }
++    dire('Chargement du billet…');
++    try {
++      const texte = await Github.lireTexte(`billets/${slug}.html`);
++      if (texte === null) throw new Error('fichier billets/' + slug + '.html introuvable');
++      const page = new DOMParser().parseFromString(texte, 'text/html');
++      const corps = page.querySelector('.billet-corps') || page.querySelector('ul.projets');
++      const entree = billets.find(b => b.slug === slug) || {};
++      ouvrirEditeur({
++        titre: (page.querySelector('main h2') || {}).textContent || entree.titre || '',
++        date: entree.date || aujourdhui(),
++        slug,
++        existant: slug,
++        html: corps ? corps.innerHTML : '',
++      });
++    } catch (e) {
++      dire(Github.erreurLisible(e), 'erreur');
++    }
++  }
++
++  function majCompteur() {
++    const { mots, minutes } = Editeur.stats();
++    $('compteur').textContent = mots ? `${mots} mot${mots > 1 ? 's' : ''} · environ ${minutes} min de lecture` : '';
++  }
++
++  function afficherOnglet(nom) {
++    $('panneau-ecrire').hidden = nom !== 'ecrire';
++    $('panneau-apercu').hidden = nom !== 'apercu';
++    $('onglet-ecrire').classList.toggle('actif', nom === 'ecrire');
++    $('onglet-apercu').classList.toggle('actif', nom === 'apercu');
++  }
++
++  // ---------- fabrication de la page d'un billet à partir de TEMPLATE.html ----------
++
++  function construirePage(gabarit, { titre, dateAffichee, corps, base }) {
++    const doc = new DOMParser().parseFromString(gabarit, 'text/html');
++
++    const commentaires = [];
++    const marcheur = doc.createTreeWalker(doc, NodeFilter.SHOW_COMMENT);
++    while (marcheur.nextNode()) commentaires.push(marcheur.currentNode);
++    commentaires.forEach(c => c.remove()); // les instructions du gabarit n'ont rien à faire dans le billet
++
++    doc.title = `bureau des projets - ${titre}`;
++    doc.querySelector('main h2').textContent = titre;
++    doc.querySelector('.tagline-date').textContent = `le ${dateAffichee}`;
++    const zone = doc.querySelector('.billet-corps');
++    const indente = corps.split('\n').map(l => '      ' + l).join('\n');
++    zone.innerHTML = `\n${indente}\n    `;
++
++    if (base) {
++      const b = doc.createElement('base');
++      b.href = base;
++      doc.head.prepend(b);
++    }
++    return '<!DOCTYPE html>\n' + doc.documentElement.outerHTML + '\n';
++  }
++
++  // ---------- aperçu ----------
++
++  async function montrerApercu() {
++    afficherOnglet('apercu');
++    const cadre = $('cadre-apercu');
++    try {
++      const res = await fetch(new URL('../billets/TEMPLATE.html', location.href), { cache: 'no-store' });
++      if (!res.ok) throw new Error('gabarit introuvable');
++      const gabarit = await res.text();
++      const titre = $('champ-titre').value.trim() || 'Titre du billet';
++      const date = $('champ-date').value || aujourdhui();
++      cadre.onload = () => {
++        const corps = cadre.contentDocument && cadre.contentDocument.body;
++        if (!corps) return;
++        const ajuster = () => { cadre.style.height = cadre.contentDocument.documentElement.scrollHeight + 'px'; };
++        ajuster();
++        new ResizeObserver(ajuster).observe(corps);
++      };
++      cadre.srcdoc = construirePage(gabarit, {
++        titre,
++        dateAffichee: formaterDate(date),
++        corps: Editeur.exporter(false).html,
++        base: new URL('../billets/', location.href).href,
++      });
++    } catch (e) {
++      dire('Aperçu impossible : ' + e.message, 'erreur');
++    }
++  }
++
++  // ---------- publication ----------
++
++  const SLUG_VALIDE = /^[a-z0-9]+(-[a-z0-9]+)*$/;
++
++  async function publier() {
++    const titre = $('champ-titre').value.trim();
++    const date = $('champ-date').value;
++    const slug = $('champ-slug').value.trim();
++
++    if (!titre) return dire('Il manque le titre.', 'erreur');
++    if (!date) return dire('Il manque la date.', 'erreur');
++    if (!SLUG_VALIDE.test(slug)) return dire('L\'adresse (slug) ne peut contenir que des minuscules, des chiffres et des tirets.', 'erreur');
++    if (Editeur.estVide()) return dire('Le billet est vide.', 'erreur');
++
++    const { html, images } = Editeur.exporter(true);
++    const dateAffichee = formaterDate(date);
++    const modification = !!courant.slug;
++    const bouton = $('btn-publier');
++    bouton.disabled = true;
++    dire('Publication en cours…');
++
++    try {
++      await Github.publier(
++        `${modification ? 'Modification du billet' : 'Nouveau billet'} : ${titre}`,
++        async lire => {
++          const gabarit = await lire('billets/TEMPLATE.html');
++          if (!gabarit) throw new Error('billets/TEMPLATE.html est introuvable dans le dépôt.');
++          const liste = JSON.parse((await lire('billets/billets.json')) || '[]');
++
++          if (!modification) {
++            if (liste.some(b => b.slug === slug) || (await lire(`billets/${slug}.html`)) !== null) {
++              throw new Error(`Un billet avec l'adresse « ${slug} » existe déjà : change le slug.`);
++            }
++          }
++          const entree = { slug, titre, date, date_affichee: dateAffichee };
++          const i = liste.findIndex(b => b.slug === slug);
++          if (i >= 0) liste[i] = entree; else liste.push(entree);
++
++          return {
++            ecrire: [
++              { chemin: `billets/${slug}.html`, texte: construirePage(gabarit, { titre, dateAffichee, corps: html }) },
++              { chemin: 'billets/billets.json', texte: JSON.stringify(liste, null, 2) + '\n' },
++              ...images.map(img => ({ chemin: img.fichier, base64: img.base64 })),
++            ],
++          };
++        }
++      );
++    } catch (e) {
++      bouton.disabled = false;
++      return dire(Github.erreurLisible(e), 'erreur');
++    }
++
++    bouton.disabled = false;
++    clearTimeout(minuteur);
++    modifie = false;
++    supprimerBrouillon(idBrouillon());
++    courant.slug = slug;
++    $('champ-slug').disabled = true;
++    $('info-brouillon').textContent = '';
++    const lien = element('a', '', 'voir le billet');
++    lien.href = `${window.BUREAU.BASE}billets/${encodeURIComponent(slug)}.html`;
++    lien.target = '_blank';
++    const msg = $('message');
++    msg.textContent = 'Publié ! Le site se met à jour dans environ une minute. Pense à faire un « git pull » avant de retoucher le code en local. ';
++    msg.appendChild(lien);
++    msg.className = 'msg ok';
++    msg.hidden = false;
++    window.scrollTo(0, 0);
++  }
++
++  async function supprimerBillet(billet) {
++    if (!confirm(`Supprimer définitivement « ${billet.titre} » ?\n\nLa page sera retirée du site (les images restent dans le dépôt).`)) return;
++    dire('Suppression en cours…');
++    try {
++      await Github.publier(`Suppression du billet : ${billet.titre}`, async lire => {
++        const liste = JSON.parse((await lire('billets/billets.json')) || '[]').filter(b => b.slug !== billet.slug);
++        return {
++          ecrire: [{ chemin: 'billets/billets.json', texte: JSON.stringify(liste, null, 2) + '\n' }],
++          supprimer: [`billets/${billet.slug}.html`],
++        };
++      });
++      supprimerBrouillon(billet.slug);
++      dire('Billet supprimé. Le site se met à jour dans environ une minute.', 'ok');
++      ouvrirListe();
++    } catch (e) {
++      dire(Github.erreurLisible(e), 'erreur');
++    }
++  }
++
++  // ---------- branchements ----------
++
++  function programmerSauvegarde() {
++    modifie = true;
++    clearTimeout(minuteur);
++    minuteur = setTimeout(sauverBrouillon, 800);
++  }
++
++  function brancher() {
++    // connexion
++    $('btn-connexion').addEventListener('click', () => {
++      const token = $('champ-token').value.trim();
++      if (!token) return dire('Colle ton token GitHub.', 'erreur');
++      demarrer(token, $('case-durable').checked);
++      $('champ-token').value = '';
++    });
++    $('champ-token').addEventListener('keydown', e => { if (e.key === 'Enter') $('btn-connexion').click(); });
++    $('btn-deconnexion').addEventListener('click', () => {
++      Github.oublierToken();
++      dire('Déconnecté : le token a été effacé de ce navigateur.', 'ok');
++      afficher('connexion');
++    });
++
++    // navigation
++    $('btn-nouveau').addEventListener('click', nouveauBillet);
++    $('btn-retour').addEventListener('click', () => { clearTimeout(minuteur); if (modifie) sauverBrouillon(); dire(''); ouvrirListe(); });
++    $('onglet-ecrire').addEventListener('click', () => afficherOnglet('ecrire'));
++    $('onglet-apercu').addEventListener('click', montrerApercu);
++
++    // titre -> slug automatique (tant qu'on n'a pas écrit le slug à la main)
++    $('champ-titre').addEventListener('input', () => {
++      if (!courant.slug && !courant.slugAMain) $('champ-slug').value = Editeur.slugifier($('champ-titre').value);
++      programmerSauvegarde();
++    });
++    $('champ-slug').addEventListener('input', () => { courant.slugAMain = true; programmerSauvegarde(); });
++    $('champ-date').addEventListener('change', programmerSauvegarde);
++
++    // éditeur
++    const barre = $('barre');
++    const barreImage = $('barre-image');
++    Editeur.init($('zone-ecriture'), {
++      barre,
++      onChange: () => { majCompteur(); programmerSauvegarde(); },
++      onStatut: (texte, type) => dire(texte, type),
++      onFigure: figure => {
++        barreImage.hidden = !figure;
++        if (!figure) return;
++        barreImage.querySelectorAll('[data-taille]').forEach(b => b.classList.toggle('actif', figure.classList.contains(b.dataset.taille)));
++        barreImage.querySelectorAll('[data-aligne]').forEach(b => b.classList.toggle('actif', figure.classList.contains(b.dataset.aligne)));
++      },
++    });
++
++    // les boutons ne volent pas le focus (sinon la sélection du texte se perd)
++    [barre, barreImage].forEach(b => b.addEventListener('mousedown', e => { if (e.target.closest('button')) e.preventDefault(); }));
++
++    barre.addEventListener('click', e => {
++      const b = e.target.closest('button');
++      if (!b) return;
++      if (b.dataset.cmd) Editeur.executer(b.dataset.cmd);
++      else if (b.dataset.bloc) Editeur.formaterBloc(b.dataset.bloc);
++      else if (b.dataset.align !== undefined) Editeur.aligner(b.dataset.align);
++      else if (b.dataset.action === 'lien') Editeur.lien();
++      else if (b.dataset.action === 'image') $('fichier-image').click();
++    });
++
++    barreImage.addEventListener('click', e => {
++      const b = e.target.closest('button');
++      if (!b) return;
++      if (b.dataset.taille) Editeur.reglerFigure('taille', b.dataset.taille);
++      else if (b.dataset.aligne) Editeur.reglerFigure('align', b.dataset.aligne);
++      else if (b.dataset.img === 'alt') Editeur.texteAlternatif();
++      else if (b.dataset.img === 'haut') Editeur.deplacerFigure(-1);
++      else if (b.dataset.img === 'bas') Editeur.deplacerFigure(1);
++      else if (b.dataset.img === 'supprimer') Editeur.supprimerFigure();
++    });
++
++    $('fichier-image').addEventListener('change', e => {
++      Editeur.ajouterImages(e.target.files);
++      e.target.value = '';
++    });
++
++    // actions de fin
++    $('btn-publier').addEventListener('click', publier);
++    $('btn-brouillon').addEventListener('click', sauverBrouillon);
++    document.addEventListener('keydown', e => {
++      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's' && !$('vue-editeur').hidden) {
++        e.preventDefault();
++        sauverBrouillon();
++      }
++    });
++  }
++
++  // ---------- démarrage ----------
++
++  brancher();
++  const tokenMemorise = Github.recupererToken();
++  if (tokenMemorise) demarrer(tokenMemorise);
++  else afficher('connexion');
++
++  // pour les tests et le débogage
++  window.AdminApp = { construirePage, formaterDate };
++})();
+diff --git a/admin/editeur.js b/admin/editeur.js
+new file mode 100644
+index 0000000..6c0cb24
+--- /dev/null
++++ b/admin/editeur.js
+@@ -0,0 +1,573 @@
++// admin/editeur.js — éditeur de texte riche, sans aucune dépendance.
++//
++// Principe : on écrit dans une zone contenteditable, puis tout ce qui sort de
++// l'éditeur (publication, aperçu) passe par nettoyer() : une liste blanche de
++// balises. Le HTML publié est donc toujours propre, quoi que le navigateur
++// ait fabriqué pendant la frappe ou un copier-coller.
++(function () {
++  // ---------- constantes ----------
++  const ALIGN_TEXTE = ['ali-centre', 'ali-droite'];                 // gauche = pas de classe
++  const TAILLES = ['taille-s', 'taille-m', 'taille-l', 'taille-xl'];
++  const ALIGN_FIGURE = ['ali-gauche', 'ali-centre', 'ali-droite'];
++  const BLOCS_TEXTE = 'P,H3,H4,BLOCKQUOTE,LI';
++  const AUTORISES = new Set(['P', 'H3', 'H4', 'BLOCKQUOTE', 'UL', 'OL', 'LI', 'STRONG', 'EM', 'U', 'S', 'A', 'BR', 'HR', 'FIGURE', 'FIGCAPTION', 'IMG']);
++  const EN_LIGNE = new Set(['STRONG', 'EM', 'U', 'S', 'A', 'BR']);
++  const BLOCS = new Set(['P', 'H3', 'H4', 'BLOCKQUOTE', 'UL', 'OL', 'LI', 'FIGURE', 'FIGCAPTION', 'HR', 'DIV']);
++  const A_IGNORER = new Set(['SCRIPT', 'STYLE', 'IFRAME', 'OBJECT', 'EMBED', 'NOSCRIPT', 'TEMPLATE', 'SVG', 'HEAD', 'META', 'LINK']);
++  const RENOMMES = { B: 'STRONG', I: 'EM', STRIKE: 'S', DEL: 'S', H1: 'H3', H2: 'H3', H5: 'H4', H6: 'H4' };
++  const DOSSIER_IMAGES = 'assets/blog/';
++  const COTE_MAX = 1600; // px, plus grand côté d'une image après réduction
++
++  // ---------- utilitaires ----------
++
++  function slugifier(texte) {
++    return String(texte)
++      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
++      .toLowerCase()
++      .replace(/[^a-z0-9]+/g, '-')
++      .replace(/^-+|-+$/g, '')
++      .slice(0, 60)
++      .replace(/-+$/g, '');
++  }
++
++  const lienValide = href => /^(https?:\/\/|mailto:|\/|\.{1,2}\/|#)/i.test(href.trim());
++  const srcValide = src => /^(data:image\/(png|jpe?g|gif|webp);base64,|https?:\/\/|\/|\.{1,2}\/|[\w-]+\/)/i.test(src.trim());
++
++  // ---------- nettoyage (liste blanche) ----------
++  //
++  // Prend du HTML quelconque, renvoie un <div> contenant uniquement des blocs
++  // propres. On passe par DOMParser : le document est inerte (rien ne
++  // s'exécute, aucune image ne se charge) pendant l'analyse.
++  //
++  // options :
++  //   sansImages        : supprime les images (collage de texte venu du web)
++  //   imagesVersChemin  : les nouvelles images (data-fichier) pointent vers ../assets/blog/...
++  //   edition           : garde data-fichier, pour recharger un brouillon
++  function nettoyer(html, options = {}) {
++    const doc = new DOMParser().parseFromString('<body>' + html, 'text/html');
++    const racine = doc.body;
++
++    // 1) images "nues" (anciens billets, collage) -> figures standard
++    racine.querySelectorAll('img').forEach(img => {
++      if (options.sansImages) { img.remove(); return; }
++      if (img.closest('figure')) return;
++      const figure = doc.createElement('figure');
++      figure.className = 'photo taille-m ali-gauche';
++      let haut = img;
++      while (haut.parentNode && haut.parentNode !== racine) haut = haut.parentNode;
++      if (haut === img) {
++        racine.replaceChild(figure, img);
++        figure.appendChild(img);
++      } else {
++        figure.appendChild(img);
++        racine.insertBefore(figure, haut.nextSibling);
++        if (haut.textContent.trim() === '' && !haut.querySelector('img,figure')) haut.remove();
++      }
++    });
++
++    // 2) copie filtrée
++    const sortie = doc.createElement('div');
++    convertir(racine, sortie, doc, options);
++    normaliser(sortie, doc);
++    return sortie;
++  }
++
++  function filtrerClasses(el, source, autorisees) {
++    const classes = (source.getAttribute('class') || '').split(/\s+/).filter(c => autorisees.includes(c));
++    if (classes.length) el.className = classes.join(' ');
++  }
++
++  function convertir(source, dest, doc, options) {
++    for (const noeud of source.childNodes) {
++      // les espaces insécables fabriqués par le navigateur pendant la frappe deviennent des espaces normaux
++      if (noeud.nodeType === 3) { dest.appendChild(doc.createTextNode(noeud.nodeValue.replace(/\u00a0/g, ' '))); continue; }
++      if (noeud.nodeType !== 1) continue;
++
++      let nom = noeud.tagName;
++      if (A_IGNORER.has(nom.toUpperCase())) continue;
++      nom = RENOMMES[nom] || nom;
++
++      if (nom === 'DIV') {
++        const contientDesBlocs = [...noeud.children].some(e => BLOCS.has(e.tagName));
++        if (contientDesBlocs) { convertir(noeud, dest, doc, options); continue; }
++        nom = 'P';
++      }
++      if (!AUTORISES.has(nom)) { convertir(noeud, dest, doc, options); continue; } // on déballe
++
++      // liens : on ne garde que les adresses sûres
++      if (nom === 'A') {
++        const href = noeud.getAttribute('href') || '';
++        if (!lienValide(href)) { convertir(noeud, dest, doc, options); continue; }
++      }
++      // images : uniquement dans une figure, avec une source sûre
++      if (nom === 'IMG') {
++        const fichier = noeud.getAttribute('data-fichier');
++        let src = noeud.getAttribute('src') || '';
++        if (!srcValide(src)) continue;
++        if (options.imagesVersChemin && fichier) src = '../' + fichier;
++        const img = doc.createElement('img');
++        img.setAttribute('src', src);
++        img.setAttribute('alt', noeud.getAttribute('alt') || '');
++        if (options.edition && fichier) img.setAttribute('data-fichier', fichier);
++        dest.appendChild(img);
++        continue;
++      }
++
++      const el = doc.createElement(nom.toLowerCase());
++      if (nom === 'A') {
++        const href = noeud.getAttribute('href').trim();
++        el.setAttribute('href', href);
++        if (/^https?:\/\//i.test(href)) { el.setAttribute('target', '_blank'); el.setAttribute('rel', 'noopener noreferrer'); }
++      }
++      if (['P', 'H3', 'H4', 'BLOCKQUOTE', 'LI'].includes(nom)) filtrerClasses(el, noeud, ALIGN_TEXTE);
++      if (nom === 'FIGURE') {
++        if (!noeud.querySelector('img')) continue;
++        const classes = (noeud.getAttribute('class') || '').split(/\s+/);
++        const taille = TAILLES.find(t => classes.includes(t)) || 'taille-m';
++        const align = ALIGN_FIGURE.find(a => classes.includes(a)) || 'ali-gauche';
++        el.className = `photo ${taille} ${align}`;
++      }
++
++      convertir(noeud, el, doc, options);
++      dest.appendChild(el);
++    }
++  }
++
++  const estVide = el => el.textContent.replace(/\u00a0/g, ' ').trim() === '' && !el.querySelector('img,hr');
++
++  function normaliser(sortie, doc) {
++    // texte "nu" à la racine -> paragraphes
++    let paragraphe = null;
++    for (const n of [...sortie.childNodes]) {
++      const enLigne = n.nodeType === 3 || (n.nodeType === 1 && EN_LIGNE.has(n.tagName));
++      if (enLigne) {
++        if (!paragraphe) { paragraphe = doc.createElement('p'); sortie.insertBefore(paragraphe, n); }
++        paragraphe.appendChild(n);
++      } else {
++        paragraphe = null;
++      }
++    }
++    // blocs vides supprimés (le plus profond d'abord)
++    sortie.querySelectorAll('li,p,h3,h4,blockquote,figcaption,ul,ol').forEach(el => { if (estVide(el)) el.remove(); });
++    sortie.querySelectorAll('ul,ol').forEach(el => { if (!el.children.length) el.remove(); });
++    [...sortie.childNodes].forEach(n => { if (n.nodeType === 3) n.remove(); });
++  }
++
++  const versHTML = sortie => [...sortie.children].map(e => e.outerHTML).join('\n');
++
++  // ---------- images ----------
++
++  function lireDataUrl(blob) {
++    return new Promise((resolve, reject) => {
++      const lecteur = new FileReader();
++      lecteur.onload = () => resolve(lecteur.result);
++      lecteur.onerror = () => reject(new Error('lecture de l\'image impossible'));
++      lecteur.readAsDataURL(blob);
++    });
++  }
++
++  // réduit l'image (1600px max) et la recompresse ; les GIF restent intacts (animation)
++  async function preparerImage(fichier) {
++    const type = fichier.type;
++    if (!/^image\/(png|jpeg|webp|gif)$/.test(type)) throw new Error('format non pris en charge (png, jpg, webp ou gif)');
++
++    let blob = fichier;
++    let mime = type;
++    if (type !== 'image/gif') {
++      const bitmap = await createImageBitmap(fichier);
++      const echelle = Math.min(1, COTE_MAX / Math.max(bitmap.width, bitmap.height));
++      const largeur = Math.round(bitmap.width * echelle);
++      const hauteur = Math.round(bitmap.height * echelle);
++      const garderPng = type === 'image/png' && fichier.size < 400 * 1024;
++      mime = garderPng ? 'image/png' : 'image/jpeg';
++
++      const canvas = document.createElement('canvas');
++      canvas.width = largeur;
++      canvas.height = hauteur;
++      const ctx = canvas.getContext('2d');
++      if (mime === 'image/jpeg') { ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, largeur, hauteur); }
++      ctx.drawImage(bitmap, 0, 0, largeur, hauteur);
++      blob = await new Promise(r => canvas.toBlob(r, mime, 0.86));
++
++      // un petit jpeg déjà optimisé : on garde l'original plutôt que de le grossir
++      if (type === 'image/jpeg' && echelle === 1 && blob.size >= fichier.size) { blob = fichier; mime = type; }
++    }
++
++    const extension = { png: 'png', jpeg: 'jpg', gif: 'gif' }[mime.split('/')[1]];
++    const base = slugifier(fichier.name.replace(/\.[^.]+$/, '')) || 'image';
++    return {
++      fichier: `${DOSSIER_IMAGES}${base}-${Date.now().toString(36)}.${extension}`,
++      dataUrl: await lireDataUrl(blob),
++    };
++  }
++
++  // ---------- l'éditeur ----------
++
++  const Editeur = {
++    zone: null,
++    options: {},
++    figureChoisie: null,
++
++    init(zone, options = {}) {
++      this.zone = zone;
++      this.options = options;
++      document.execCommand('defaultParagraphSeparator', false, 'p');
++      this.vider();
++
++      zone.addEventListener('input', e => {
++        // dès qu'on tape, l'image n'est plus "choisie" (sinon Retour arrière la supprimerait)
++        if (this.figureChoisie && !(e.target.closest && e.target.closest('figcaption'))) this.choisirFigure(null);
++        this.apresSaisie();
++      });
++      zone.addEventListener('paste', e => this.coller(e));
++      zone.addEventListener('drop', e => {
++        const fichiers = e.dataTransfer && e.dataTransfer.files;
++        if (fichiers && fichiers.length) { e.preventDefault(); this.ajouterImages(fichiers); }
++      });
++      zone.addEventListener('click', e => {
++        const figure = e.target.closest('figure');
++        if (figure && !e.target.closest('figcaption')) {
++          this.choisirFigure(figure);
++          this.curseurApres(figure);
++        } else {
++          this.choisirFigure(null);
++        }
++      });
++      zone.addEventListener('keydown', e => {
++        if (this.figureChoisie && (e.key === 'Backspace' || e.key === 'Delete') && !e.target.closest('figcaption')) {
++          e.preventDefault();
++          this.supprimerFigure();
++        }
++        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); this.lien(); }
++        // Entrée dans une citation vide : on en sort, comme on sort d'une liste
++        if (e.key === 'Enter' && !e.shiftKey) {
++          const bloc = this.blocCourant();
++          if (bloc && bloc.tagName === 'BLOCKQUOTE' && bloc.textContent.trim() === '') {
++            e.preventDefault();
++            this.executer('formatBlock', 'p');
++          }
++        }
++      });
++      document.addEventListener('selectionchange', () => this.majBoutons());
++    },
++
++    prevenir() { if (this.options.onChange) this.options.onChange(); },
++
++    // redonne le focus seulement si l'éditeur ne l'a pas déjà : refocaliser
++    // une zone déjà active peut ramener le curseur au début.
++    focaliser() {
++      if (!this.zone.contains(document.activeElement)) this.zone.focus();
++    },
++
++    vider() {
++      this.zone.innerHTML = '<p><br></p>';
++      this.choisirFigure(null);
++    },
++
++    // le curseur ne peut pas se poser avant ou après une figure : on garde toujours
++    // un paragraphe vide au début et à la fin (ils disparaissent à l'export)
++    garantirParagraphes() {
++      const z = this.zone;
++      const vide = () => { const p = document.createElement('p'); p.innerHTML = '<br>'; return p; };
++      if (!z.firstElementChild || z.firstElementChild.tagName === 'FIGURE') z.prepend(vide());
++      if (z.lastElementChild.tagName === 'FIGURE') z.append(vide());
++    },
++
++    // une image n'est pas éditable : on pose le curseur au début du bloc qui la suit,
++    // pour que la frappe continue après l'image au lieu d'être perdue
++    curseurApres(figure) {
++      const suivant = figure.nextElementSibling;
++      if (!suivant || suivant.tagName === 'FIGURE') return;
++      const plage = document.createRange();
++      plage.selectNodeContents(suivant);
++      plage.collapse(true);
++      const sel = getSelection();
++      sel.removeAllRanges();
++      sel.addRange(plage);
++    },
++
++    // ---- chargement ----
++
++    // html : contenu d'un billet publié, ou brouillon (avec data-fichier)
++    charger(html) {
++      const propre = versHTML(nettoyer(html, { edition: true }));
++      this.zone.innerHTML = propre || '<p><br></p>';
++      this.zone.querySelectorAll('figure').forEach(f => this.preparerFigure(f));
++      this.garantirParagraphes();
++      this.choisirFigure(null);
++    },
++
++    // contenu brut de la zone (pour les brouillons) : on passe quand même par le nettoyage
++    brut() {
++      return versHTML(nettoyer(this.zone.innerHTML, { edition: true }));
++    },
++
++    // contenu final : { html, images:[{fichier, base64}] }
++    exporter(pourPublication) {
++      const html = versHTML(nettoyer(this.zone.innerHTML, { imagesVersChemin: pourPublication }));
++      const images = [];
++      const vus = new Set();
++      this.zone.querySelectorAll('img[data-fichier]').forEach(img => {
++        const fichier = img.getAttribute('data-fichier');
++        const src = img.getAttribute('src') || '';
++        if (vus.has(fichier) || !src.startsWith('data:')) return;
++        vus.add(fichier);
++        images.push({ fichier, base64: src.slice(src.indexOf(',') + 1) });
++      });
++      return { html, images };
++    },
++
++    estVide() {
++      return !this.zone.querySelector('img') && this.zone.textContent.trim() === '';
++    },
++
++    stats() {
++      const mots = this.zone.textContent.split(/\s+/).filter(Boolean).length;
++      return { mots, minutes: Math.max(1, Math.ceil(mots / 200)) };
++    },
++
++    // ---- saisie ----
++
++    apresSaisie() {
++      const z = this.zone;
++      const aDuTexteNu = [...z.childNodes].some(n => (n.nodeType === 3 && n.nodeValue.trim()) || (n.nodeType === 1 && EN_LIGNE.has(n.tagName)));
++      if (!z.firstChild) this.vider();
++      else if (aDuTexteNu) document.execCommand('formatBlock', false, 'p');
++      this.prevenir();
++    },
++
++    coller(e) {
++      const presse = e.clipboardData;
++      if (!presse) return;
++      const fichiers = [...presse.files].filter(f => f.type.startsWith('image/'));
++      e.preventDefault();
++      if (fichiers.length) { this.ajouterImages(fichiers); return; }
++      const html = presse.getData('text/html');
++      if (html) {
++        const propre = versHTML(nettoyer(html, { sansImages: true }));
++        if (propre) { document.execCommand('insertHTML', false, propre); this.prevenir(); return; }
++      }
++      document.execCommand('insertText', false, presse.getData('text/plain'));
++      this.prevenir();
++    },
++
++    // ---- commandes de mise en forme ----
++
++    executer(commande, valeur) {
++      this.focaliser();
++      // listes et titres : le navigateur ramène le curseur au début du bloc, on le remet
++      const delicate = ['insertUnorderedList', 'insertOrderedList', 'formatBlock'].includes(commande);
++      const memoire = delicate ? this.memoriserCurseur() : null;
++      document.execCommand(commande, false, valeur || null);
++      if (delicate) this.deballerListes();
++      if (memoire !== null) this.restaurerCurseur(memoire);
++      this.prevenir();
++      this.majBoutons();
++    },
++
++    // position du curseur = nombre de caractères depuis le début de son bloc (null si sélection étendue)
++    memoriserCurseur() {
++      const sel = getSelection();
++      const bloc = this.blocCourant();
++      if (!sel.rangeCount || !sel.isCollapsed || !bloc) return null;
++      const plage = document.createRange();
++      plage.selectNodeContents(bloc);
++      plage.setEnd(sel.anchorNode, sel.anchorOffset);
++      return plage.toString().length;
++    },
++
++    restaurerCurseur(decalage) {
++      const bloc = this.blocCourant();
++      if (!bloc) return;
++      const marcheur = document.createTreeWalker(bloc, NodeFilter.SHOW_TEXT);
++      let reste = decalage;
++      let noeud;
++      while ((noeud = marcheur.nextNode())) {
++        if (reste <= noeud.nodeValue.length) {
++          const plage = document.createRange();
++          plage.setStart(noeud, reste);
++          plage.collapse(true);
++          const sel = getSelection();
++          sel.removeAllRanges();
++          sel.addRange(plage);
++          return;
++        }
++        reste -= noeud.nodeValue.length;
++      }
++    },
++
++    // le navigateur range parfois une liste dans un <p> (HTML invalide) : on retire ce <p>
++    deballerListes() {
++      this.zone.querySelectorAll('p > ul, p > ol').forEach(liste => {
++        const p = liste.parentNode;
++        if (p.childNodes.length === 1) p.replaceWith(liste);
++      });
++    },
++
++    blocCourant() {
++      const sel = getSelection();
++      if (!sel.rangeCount || !this.zone.contains(sel.anchorNode)) return null;
++      const noeud = sel.anchorNode.nodeType === 1 ? sel.anchorNode : sel.anchorNode.parentElement;
++      const bloc = noeud.closest(BLOCS_TEXTE);
++      return bloc && this.zone.contains(bloc) ? bloc : null;
++    },
++
++    // paragraphe / titre / sous-titre / citation ; un second clic revient au paragraphe
++    formaterBloc(balise) {
++      const actuel = this.blocCourant();
++      const cible = actuel && actuel.tagName.toLowerCase() === balise && balise !== 'p' ? 'p' : balise;
++      this.executer('formatBlock', cible);
++    },
++
++    // alignement du/des bloc(s) sélectionné(s) : '' (gauche), 'ali-centre', 'ali-droite'
++    aligner(classe) {
++      this.focaliser();
++      const sel = getSelection();
++      if (!sel.rangeCount) return;
++      const plage = sel.getRangeAt(0);
++      const blocs = [...this.zone.querySelectorAll(BLOCS_TEXTE)].filter(b => plage.intersectsNode(b));
++      const liste = blocs.length ? blocs : [this.blocCourant()].filter(Boolean);
++      liste.forEach(b => { b.classList.remove(...ALIGN_TEXTE); if (classe) b.classList.add(classe); });
++      this.prevenir();
++    },
++
++    lien() {
++      this.focaliser();
++      const sel = getSelection();
++      const dansUnLien = sel.anchorNode && (sel.anchorNode.nodeType === 1 ? sel.anchorNode : sel.anchorNode.parentElement).closest('a');
++      const url = prompt('Adresse du lien :', dansUnLien ? dansUnLien.getAttribute('href') : 'https://');
++      if (!url || url === 'https://') return;
++      if (!lienValide(url)) { alert('Adresse non valide (elle doit commencer par https://, mailto: ou /).'); return; }
++      if (sel.isCollapsed && !dansUnLien) {
++        const a = document.createElement('a');
++        a.href = url; a.textContent = url;
++        document.execCommand('insertHTML', false, a.outerHTML);
++      } else {
++        document.execCommand('createLink', false, url);
++      }
++      this.prevenir();
++    },
++
++    // ---- images ----
++
++    async ajouterImages(fichiers) {
++      for (const f of fichiers) {
++        try {
++          if (this.options.onStatut) this.options.onStatut('Traitement de l\'image…');
++          const { fichier, dataUrl } = await preparerImage(f);
++          this.insererFigure(this.creerFigure(dataUrl, fichier, ''));
++          if (this.options.onStatut) this.options.onStatut('');
++        } catch (e) {
++          if (this.options.onStatut) this.options.onStatut('Image non ajoutée : ' + e.message, 'erreur');
++        }
++      }
++    },
++
++    creerFigure(src, fichier, alt) {
++      const figure = document.createElement('figure');
++      figure.className = 'photo taille-m ali-centre';
++      const img = document.createElement('img');
++      img.src = src;
++      img.alt = alt || '';
++      if (fichier) img.setAttribute('data-fichier', fichier);
++      figure.appendChild(img);
++      this.preparerFigure(figure);
++      return figure;
++    },
++
++    // rend la figure non éditable (sauf sa légende)
++    preparerFigure(figure) {
++      figure.setAttribute('contenteditable', 'false');
++      let legende = figure.querySelector('figcaption');
++      if (!legende) { legende = document.createElement('figcaption'); figure.appendChild(legende); }
++      legende.setAttribute('contenteditable', 'true');
++    },
++
++    insererFigure(figure) {
++      const sel = getSelection();
++      let bloc = null;
++      if (sel.rangeCount && this.zone.contains(sel.anchorNode)) {
++        bloc = sel.anchorNode;
++        while (bloc && bloc.parentNode !== this.zone) bloc = bloc.parentNode;
++      }
++      if (bloc && bloc.nodeType === 1 && bloc.tagName === 'P' && estVide(bloc)) bloc.replaceWith(figure);
++      else if (bloc) bloc.after(figure);
++      else this.zone.appendChild(figure);
++
++      if (!figure.nextElementSibling) {
++        const p = document.createElement('p');
++        p.innerHTML = '<br>';
++        figure.after(p);
++      }
++      this.choisirFigure(figure);
++      this.prevenir();
++    },
++
++    choisirFigure(figure) {
++      if (this.figureChoisie) this.figureChoisie.classList.remove('choisie');
++      this.figureChoisie = figure;
++      if (figure) figure.classList.add('choisie');
++      if (this.options.onFigure) this.options.onFigure(figure);
++    },
++
++    reglerFigure(type, valeur) {
++      const f = this.figureChoisie;
++      if (!f) return;
++      const liste = type === 'taille' ? TAILLES : ALIGN_FIGURE;
++      f.classList.remove(...liste);
++      f.classList.add(valeur);
++      this.prevenir();
++      if (this.options.onFigure) this.options.onFigure(f);
++    },
++
++    texteAlternatif() {
++      const f = this.figureChoisie;
++      if (!f) return;
++      const img = f.querySelector('img');
++      const alt = prompt('Description de l\'image (pour les lecteurs d\'écran) :', img.alt);
++      if (alt !== null) { img.alt = alt; this.prevenir(); }
++    },
++
++    deplacerFigure(sens) {
++      const f = this.figureChoisie;
++      if (!f) return;
++      const voisin = sens < 0 ? f.previousElementSibling : f.nextElementSibling;
++      if (!voisin) return;
++      if (sens < 0) voisin.before(f); else voisin.after(f);
++      this.garantirParagraphes();
++      this.prevenir();
++    },
++
++    supprimerFigure() {
++      const f = this.figureChoisie;
++      if (!f) return;
++      f.remove();
++      this.choisirFigure(null);
++      if (!this.zone.firstChild) this.vider();
++      else this.garantirParagraphes();
++      this.prevenir();
++    },
++
++    // ---- état des boutons (gras actif, etc.) ----
++
++    majBoutons() {
++      if (!this.options.barre) return;
++      const sel = getSelection();
++      const dedans = sel.rangeCount && this.zone.contains(sel.anchorNode);
++      this.options.barre.querySelectorAll('[data-etat]').forEach(b => {
++        let actif = false;
++        try { actif = dedans && document.queryCommandState(b.dataset.cmd); } catch (e) { /* ignoré */ }
++        b.classList.toggle('actif', !!actif);
++      });
++      const bloc = dedans ? this.blocCourant() : null;
++      const balise = bloc ? (bloc.tagName === 'LI' ? '' : bloc.tagName.toLowerCase()) : '';
++      this.options.barre.querySelectorAll('[data-bloc]').forEach(b => b.classList.toggle('actif', b.dataset.bloc === balise));
++      const align = bloc ? (ALIGN_TEXTE.find(c => bloc.classList.contains(c)) || '') : null;
++      this.options.barre.querySelectorAll('[data-align]').forEach(b => b.classList.toggle('actif', align !== null && b.dataset.align === align));
++    },
++  };
++
++  Editeur.slugifier = slugifier;
++  Editeur.nettoyer = nettoyer;
++  window.Editeur = Editeur;
++})();
+diff --git a/admin/github.js b/admin/github.js
+new file mode 100644
+index 0000000..9e9a6b9
+--- /dev/null
++++ b/admin/github.js
+@@ -0,0 +1,143 @@
++// admin/github.js — petit client pour l'API GitHub, pensé pour l'éditeur de billets.
++// Aucune dépendance. Le token reste dans ton navigateur (localStorage si tu coches
++// "rester connecté", sinon sessionStorage) et n'est envoyé qu'à api.github.com.
++(function () {
++  const API = 'https://api.github.com';
++  const CLE = 'bdp-token';
++
++  const Github = {
++    repo: (window.BUREAU && window.BUREAU.REPO) || 'JordanMRT/bureau-des-projets',
++    branche: 'main',
++    token: null,
++
++    // ---------- token ----------
++
++    recupererToken() {
++      this.token = localStorage.getItem(CLE) || sessionStorage.getItem(CLE) || null;
++      return this.token;
++    },
++
++    memoriserToken(token, durable) {
++      this.token = token;
++      localStorage.removeItem(CLE);
++      sessionStorage.removeItem(CLE);
++      (durable ? localStorage : sessionStorage).setItem(CLE, token);
++    },
++
++    oublierToken() {
++      this.token = null;
++      localStorage.removeItem(CLE);
++      sessionStorage.removeItem(CLE);
++    },
++
++    // ---------- appels bas niveau ----------
++
++    async appel(chemin, options = {}) {
++      const res = await fetch(API + chemin, {
++        cache: 'no-store',
++        ...options,
++        headers: {
++          Accept: 'application/vnd.github+json',
++          Authorization: `Bearer ${this.token}`,
++          'X-GitHub-Api-Version': '2022-11-28',
++          ...(options.body ? { 'Content-Type': 'application/json' } : {}),
++        },
++      });
++      if (!res.ok) {
++        let detail = '';
++        try { detail = (await res.json()).message || ''; } catch (e) { /* pas de JSON */ }
++        const erreur = new Error(detail || res.statusText);
++        erreur.status = res.status;
++        throw erreur;
++      }
++      return res.status === 204 ? null : res.json();
++    },
++
++    // message compréhensible pour l'écran
++    erreurLisible(e) {
++      if (e.status === 401) return 'Token refusé par GitHub (invalide ou expiré).';
++      if (e.status === 403) return 'GitHub refuse l\'accès : vérifie que le token a la permission "Contents : Read and write" (ou que la limite de requêtes n\'est pas atteinte).';
++      if (e.status === 404) return 'Dépôt introuvable avec ce token : vérifie qu\'il donne accès à ' + this.repo + '.';
++      if (e.status === 409 || e.status === 422) return 'Conflit avec le dépôt (un autre commit vient d\'arriver ?). Réessaie dans un instant. Détail : ' + e.message;
++      if (e instanceof TypeError) return 'Impossible de joindre GitHub (connexion ?).';
++      return e.message || 'Erreur inconnue.';
++    },
++
++    // ---------- lecture ----------
++
++    // vérifie que le token marche et qu'il peut écrire sur le dépôt
++    async verifier() {
++      const infos = await this.appel(`/repos/${this.repo}`);
++      this.branche = infos.default_branch || 'main';
++      if (infos.permissions && infos.permissions.push === false) {
++        const e = new Error('Ce token ne peut pas écrire sur le dépôt.');
++        e.status = 403;
++        throw e;
++      }
++      return infos;
++    },
++
++    // lit un fichier texte (UTF-8) du dépôt ; renvoie null s'il n'existe pas
++    async lireTexte(chemin, ref) {
++      const suite = ref ? `?ref=${encodeURIComponent(ref)}` : '';
++      let fichier;
++      try {
++        fichier = await this.appel(`/repos/${this.repo}/contents/${chemin}${suite}`);
++      } catch (e) {
++        if (e.status === 404) return null;
++        throw e;
++      }
++      const binaire = atob(fichier.content.replace(/\n/g, ''));
++      return new TextDecoder().decode(Uint8Array.from(binaire, c => c.charCodeAt(0)));
++    },
++
++    async listerBillets() {
++      const texte = await this.lireTexte('billets/billets.json');
++      return texte ? JSON.parse(texte) : [];
++    },
++
++    // ---------- écriture : UN SEUL commit pour tous les fichiers ----------
++    //
++    // `construire(lire)` est appelée avec le dépôt à son état le plus récent ;
++    // elle renvoie { ecrire: [{ chemin, texte | base64 }], supprimer: [chemin] }.
++    // `lire(chemin)` lit un fichier tel qu'il est sur la branche à cet instant.
++    async publier(message, construire) {
++      const repo = `/repos/${this.repo}`;
++      const ref = await this.appel(`${repo}/git/ref/heads/${this.branche}`);
++      const teteSha = ref.object.sha;
++      const tete = await this.appel(`${repo}/git/commits/${teteSha}`);
++
++      const { ecrire = [], supprimer = [] } = await construire(chemin => this.lireTexte(chemin, teteSha));
++
++      const arbre = [];
++      for (const f of ecrire) {
++        const blob = await this.appel(`${repo}/git/blobs`, {
++          method: 'POST',
++          body: JSON.stringify(f.base64
++            ? { content: f.base64, encoding: 'base64' }
++            : { content: f.texte, encoding: 'utf-8' }),
++        });
++        arbre.push({ path: f.chemin, mode: '100644', type: 'blob', sha: blob.sha });
++      }
++      for (const chemin of supprimer) {
++        arbre.push({ path: chemin, mode: '100644', type: 'blob', sha: null });
++      }
++
++      const nouvelArbre = await this.appel(`${repo}/git/trees`, {
++        method: 'POST',
++        body: JSON.stringify({ base_tree: tete.tree.sha, tree: arbre }),
++      });
++      const commit = await this.appel(`${repo}/git/commits`, {
++        method: 'POST',
++        body: JSON.stringify({ message, tree: nouvelArbre.sha, parents: [teteSha] }),
++      });
++      await this.appel(`${repo}/git/refs/heads/${this.branche}`, {
++        method: 'PATCH',
++        body: JSON.stringify({ sha: commit.sha }),
++      });
++      return commit.sha;
++    },
++  };
++
++  window.Github = Github;
++})();
+diff --git a/admin/index.html b/admin/index.html
+new file mode 100644
+index 0000000..fdf5681
+--- /dev/null
++++ b/admin/index.html
+@@ -0,0 +1,179 @@
++<!DOCTYPE html>
++<html lang="fr">
++<head>
++<meta charset="UTF-8">
++<meta name="viewport" content="width=device-width, initial-scale=1.0">
++<meta name="robots" content="noindex, nofollow">
++<title>bureau des projets - écrire</title>
++<link rel="preconnect" href="https://fonts.googleapis.com">
++<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
++<link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Bebas+Neue&family=Public+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
++<link rel="stylesheet" href="../style.css">
++<link rel="stylesheet" href="admin.css">
++<link rel="shortcut icon" type="image/png" href="../favicon.png"/>
++</head>
++<body>
++<div class="wrap wrap-admin">
++
++  <main class="admin" data-sans-bandeau>
++
++    <h2>Écrire un billet</h2>
++    <p id="message" class="msg" role="status" hidden></p>
++
++    <!-- ============ 1. connexion ============ -->
++    <section id="vue-connexion" class="panneau" hidden>
++      <p>Cette page publie directement dans le dépôt GitHub du site. Pour t'identifier, colle ici ton <b>token GitHub</b> : il reste dans ton navigateur et n'est envoyé qu'à GitHub.</p>
++      <label class="champ">
++        <span>token GitHub</span>
++        <input type="password" id="champ-token" autocomplete="off" spellcheck="false" placeholder="github_pat_…">
++      </label>
++      <label class="case">
++        <input type="checkbox" id="case-durable"> rester connecté sur cet appareil
++      </label>
++      <p><button type="button" class="btn btn-principal" id="btn-connexion">se connecter</button></p>
++
++      <details>
++        <summary>Comment créer le token ?</summary>
++        <ol>
++          <li>Sur GitHub : <b>Settings → Developer settings → Personal access tokens → Fine-grained tokens → Generate new token</b>.</li>
++          <li><b>Repository access</b> : « Only select repositories », puis <code>bureau-des-projets</code>.</li>
++          <li><b>Permissions → Repository permissions → Contents</b> : « Read and write ».</li>
++          <li>Choisis une durée d'expiration, génère, copie le token et colle-le ci-dessus.</li>
++        </ol>
++        <p class="aide">Ne mets jamais ce token dans un fichier du site. Si tu le perds ou le soupçonnes d'être exposé, révoque-le sur GitHub et crées-en un autre.</p>
++      </details>
++    </section>
++
++    <!-- ============ 2. liste ============ -->
++    <section id="vue-liste" hidden>
++      <p class="actions">
++        <button type="button" class="btn btn-principal" id="btn-nouveau">+ nouveau billet</button>
++        <button type="button" class="btn" id="btn-deconnexion">se déconnecter</button>
++      </p>
++
++      <div id="bloc-brouillons" class="panneau" hidden>
++        <h3>Brouillons sur cet appareil</h3>
++        <ul id="liste-brouillons" class="liste-admin"></ul>
++      </div>
++
++      <div class="panneau">
++        <h3>Billets publiés</h3>
++        <ul id="liste-billets" class="liste-admin"></ul>
++      </div>
++    </section>
++
++    <!-- ============ 3. éditeur ============ -->
++    <section id="vue-editeur" hidden>
++      <p class="actions">
++        <button type="button" class="btn" id="btn-retour">← retour</button>
++      </p>
++
++      <div class="panneau">
++        <label class="champ">
++          <span>titre</span>
++          <input type="text" id="champ-titre" maxlength="140" autocomplete="off" placeholder="Le titre de ton billet">
++        </label>
++        <div class="deux-champs">
++          <label class="champ">
++            <span>date</span>
++            <input type="date" id="champ-date">
++          </label>
++          <label class="champ">
++            <span>adresse (slug)</span>
++            <input type="text" id="champ-slug" maxlength="60" autocomplete="off" spellcheck="false" placeholder="genere-depuis-le-titre">
++          </label>
++        </div>
++      </div>
++
++      <div class="onglets" role="tablist">
++        <button type="button" role="tab" id="onglet-ecrire" class="onglet actif">écrire</button>
++        <button type="button" role="tab" id="onglet-apercu" class="onglet">aperçu</button>
++      </div>
++
++      <div id="panneau-ecrire">
++        <div class="outils">
++          <div class="barre" id="barre" role="toolbar" aria-label="mise en forme">
++            <div class="groupe">
++              <button type="button" data-cmd="undo" title="Annuler">↶</button>
++              <button type="button" data-cmd="redo" title="Rétablir">↷</button>
++            </div>
++            <div class="groupe">
++              <button type="button" data-bloc="p" title="Paragraphe">Texte</button>
++              <button type="button" data-bloc="h3" title="Titre de section">Titre</button>
++              <button type="button" data-bloc="h4" title="Sous-titre">Sous-titre</button>
++              <button type="button" data-bloc="blockquote" title="Citation">Citation</button>
++            </div>
++            <div class="groupe">
++              <button type="button" data-cmd="bold" data-etat title="Gras (Ctrl+B)"><b>B</b></button>
++              <button type="button" data-cmd="italic" data-etat title="Italique (Ctrl+I)"><i>I</i></button>
++              <button type="button" data-cmd="underline" data-etat title="Souligné (Ctrl+U)"><u>U</u></button>
++              <button type="button" data-cmd="strikeThrough" data-etat title="Barré"><s>S</s></button>
++            </div>
++            <div class="groupe">
++              <button type="button" data-cmd="insertUnorderedList" data-etat title="Liste à puces">Liste</button>
++              <button type="button" data-cmd="insertOrderedList" data-etat title="Liste numérotée">1. 2.</button>
++            </div>
++            <div class="groupe">
++              <button type="button" data-align="" title="Aligner à gauche">Gauche</button>
++              <button type="button" data-align="ali-centre" title="Centrer">Centre</button>
++              <button type="button" data-align="ali-droite" title="Aligner à droite">Droite</button>
++            </div>
++            <div class="groupe">
++              <button type="button" data-action="lien" title="Ajouter un lien (Ctrl+K)">Lien</button>
++              <button type="button" data-cmd="unlink" title="Retirer le lien">Délier</button>
++              <button type="button" data-action="image" title="Insérer une image">Image</button>
++              <button type="button" data-cmd="insertHorizontalRule" title="Ligne de séparation">Séparateur</button>
++              <button type="button" data-cmd="removeFormat" title="Effacer la mise en forme du texte sélectionné">Nettoyer</button>
++            </div>
++          </div>
++
++          <div class="barre barre-image" id="barre-image" hidden>
++            <span class="etiquette">image</span>
++            <div class="groupe">
++              <button type="button" data-taille="taille-s">Petite</button>
++              <button type="button" data-taille="taille-m">Moyenne</button>
++              <button type="button" data-taille="taille-l">Grande</button>
++              <button type="button" data-taille="taille-xl">Pleine</button>
++            </div>
++            <div class="groupe">
++              <button type="button" data-aligne="ali-gauche">Gauche</button>
++              <button type="button" data-aligne="ali-centre">Centre</button>
++              <button type="button" data-aligne="ali-droite">Droite</button>
++            </div>
++            <div class="groupe">
++              <button type="button" data-img="alt" title="Description pour les lecteurs d'écran">Texte alt</button>
++              <button type="button" data-img="haut" title="Monter">↑</button>
++              <button type="button" data-img="bas" title="Descendre">↓</button>
++              <button type="button" data-img="supprimer" class="danger">Supprimer</button>
++            </div>
++          </div>
++        </div>
++
++        <input type="file" id="fichier-image" accept="image/png,image/jpeg,image/webp,image/gif" multiple hidden>
++        <div id="zone-ecriture" class="billet-corps zone-ecriture" contenteditable="true" spellcheck="true"></div>
++        <p class="aide" id="compteur"></p>
++      </div>
++
++      <div id="panneau-apercu" hidden>
++        <p class="aide">Aperçu avec le vrai style du site, tel que le billet sera publié.</p>
++        <iframe id="cadre-apercu" title="aperçu du billet"></iframe>
++      </div>
++
++      <p class="actions actions-fin">
++        <button type="button" class="btn btn-principal" id="btn-publier">publier</button>
++        <button type="button" class="btn" id="btn-brouillon">enregistrer le brouillon</button>
++        <span class="aide" id="info-brouillon"></span>
++      </p>
++    </section>
++
++  </main>
++
++</div>
++
++<script src="../commun.js"></script>
++<script src="github.js"></script>
++<script src="editeur.js"></script>
++<script src="app.js"></script>
++
++</body>
++</html>
+diff --git a/commun.js b/commun.js
+index 859043e..60eda2a 100644
+--- a/commun.js
++++ b/commun.js
+@@ -162,7 +162,7 @@
+ 
+     // ---- bandeau "en ce moment" et pied de page ----
+     const main = document.querySelector('main');
+-    if (main && !main.querySelector('.statut')) {
++    if (main && !main.querySelector('.statut') && !main.hasAttribute('data-sans-bandeau')) {
+       main.insertAdjacentHTML('afterbegin', STATUT_HTML);
+       main.insertAdjacentHTML('beforeend', FOOTER_HTML);
+     }
+@@ -178,25 +178,15 @@
+ 
+     // ---- statut en ligne / hors ligne ----
+     supabaseSelect('statut').then(data => {
+-      const dot = document.getElementById('statut-dot');
+-      const texte = document.getElementById('statut-texte');
+-      const message = document.getElementById('statut-message');
+-      if (!data || !dot) return; // Supabase pas encore branché, on garde l'état par défaut du HTML
++      if (!data) return; // Supabase pas encore branché, on garde l'état par défaut du HTML
+ 
+-      if (data.online) {
+-        dot.style.background = 'var(--dot)';
+-        texte.textContent = 'en ligne';
+-      } else {
+-        dot.style.background = '#a8a094';
+-        texte.textContent = 'hors ligne';
+-      }
++      const couleur = data.online ? 'var(--dot)' : '#a8a094';
++      const libelle = data.online ? 'en ligne' : 'hors ligne';
++      document.querySelectorAll('#statut-dot, #header-dot').forEach(d => { d.style.background = couleur; });
++      document.querySelectorAll('#statut-texte, #header-statut-texte').forEach(t => { t.textContent = libelle; });
+ 
+-      const headerDot = document.getElementById('header-dot');
+-      const headerTexte = document.getElementById('header-statut-texte');
+-      if (headerDot) headerDot.style.background = data.online ? 'var(--dot)' : '#a8a094';
+-      if (headerTexte) headerTexte.textContent = data.online ? 'en ligne' : 'hors ligne';
+-
+-      if (data.message) {
++      const message = document.getElementById('statut-message');
++      if (data.message && message) {
+         message.textContent = data.message;
+         message.style.display = 'block';
+       }
+diff --git a/style.css b/style.css
+index 20f50a5..a609f9d 100644
+--- a/style.css
++++ b/style.css
+@@ -520,3 +520,64 @@ aside .bloc:hover{
+   .header-droite{ display:none; }
+   .header-menu-liste{ gap:20px; }
+ }
++
++/* ==== contenu des billets (écrit avec l'éditeur de /admin) ==== */
++
++.billet-corps h3{
++  font-family:var(--titre), sans-serif;
++  font-weight:400;
++  font-size:1.5rem;
++  letter-spacing:0.02em;
++  text-transform:uppercase;
++  color:var(--accent);
++  margin:1.2em 0 0.3em;
++}
++.billet-corps h4{
++  font-family:var(--h1), sans-serif;
++  font-size:0.9rem;
++  letter-spacing:0.06em;
++  text-transform:uppercase;
++  color:var(--violet);
++  margin:1.2em 0 0.3em;
++}
++.billet-corps blockquote{
++  margin:1em 0;
++  padding:0.2em 1em;
++  border-left:3px solid var(--violet);
++  color:var(--muted);
++  font-style:italic;
++}
++.billet-corps ul,
++.billet-corps ol{ margin:0.6em 0; padding-left:1.4em; }
++.billet-corps hr{ border-top:1px dashed var(--border-soft); margin:1.4em 0; }
++.billet-corps .ali-centre{ text-align:center; }
++.billet-corps .ali-droite{ text-align:right; }
++
++.photo{ margin:1em 0; }
++.photo img{
++  display:block;
++  max-width:100%;
++  height:auto;
++  border:1px solid var(--border);
++  box-shadow:3px 4px 0 rgba(78, 43, 151, 0.12);
++}
++.photo figcaption{
++  margin-top:0.4rem;
++  font-size:0.8rem;
++  color:var(--muted);
++}
++.photo.taille-s img{ width:30%; }
++.photo.taille-m img{ width:45%; }
++.photo.taille-l img{ width:70%; }
++.photo.taille-xl img{ width:100%; }
++.photo.ali-gauche img{ margin-right:auto; }
++.photo.ali-centre img{ margin-left:auto; margin-right:auto; }
++.photo.ali-droite img{ margin-left:auto; }
++.photo.ali-centre figcaption{ text-align:center; }
++.photo.ali-droite figcaption{ text-align:right; }
++
++@media (max-width:680px){
++  .photo.taille-s img{ width:50%; }
++  .photo.taille-m img{ width:75%; }
++  .photo.taille-l img{ width:100%; }
++}

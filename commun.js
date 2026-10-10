@@ -162,7 +162,7 @@
 
     // ---- bandeau "en ce moment" et pied de page ----
     const main = document.querySelector('main');
-    if (main && !main.querySelector('.statut')) {
+    if (main && !main.querySelector('.statut') && !main.hasAttribute('data-sans-bandeau')) {
       main.insertAdjacentHTML('afterbegin', STATUT_HTML);
       main.insertAdjacentHTML('beforeend', FOOTER_HTML);
     }
@@ -178,25 +178,15 @@
 
     // ---- statut en ligne / hors ligne ----
     supabaseSelect('statut').then(data => {
-      const dot = document.getElementById('statut-dot');
-      const texte = document.getElementById('statut-texte');
+      if (!data) return; // Supabase pas encore branché, on garde l'état par défaut du HTML
+
+      const couleur = data.online ? 'var(--dot)' : '#a8a094';
+      const libelle = data.online ? 'en ligne' : 'hors ligne';
+      document.querySelectorAll('#statut-dot, #header-dot').forEach(d => { d.style.background = couleur; });
+      document.querySelectorAll('#statut-texte, #header-statut-texte').forEach(t => { t.textContent = libelle; });
+
       const message = document.getElementById('statut-message');
-      if (!data || !dot) return; // Supabase pas encore branché, on garde l'état par défaut du HTML
-
-      if (data.online) {
-        dot.style.background = 'var(--dot)';
-        texte.textContent = 'en ligne';
-      } else {
-        dot.style.background = '#a8a094';
-        texte.textContent = 'hors ligne';
-      }
-
-      const headerDot = document.getElementById('header-dot');
-      const headerTexte = document.getElementById('header-statut-texte');
-      if (headerDot) headerDot.style.background = data.online ? 'var(--dot)' : '#a8a094';
-      if (headerTexte) headerTexte.textContent = data.online ? 'en ligne' : 'hors ligne';
-
-      if (data.message) {
+      if (data.message && message) {
         message.textContent = data.message;
         message.style.display = 'block';
       }

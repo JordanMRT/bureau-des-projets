@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>bureau des projets - écrire</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Bebas+Neue&family=Public+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="admin.css">
+<link rel="shortcut icon" type="image/png" href="../favicon.png"/>
+</head>
+<body>
+<div class="wrap wrap-admin">
+
+  <main class="admin" data-sans-bandeau>
+
+    <h2>Écrire un billet</h2>
+    <p id="message" class="msg" role="status" hidden></p>
+
+    <!-- ============ 1. connexion ============ -->
+    <section id="vue-connexion" class="panneau" hidden>
+      <p>Cette page publie directement dans le dépôt GitHub du site. Pour t'identifier, colle ici ton <b>token GitHub</b> : il reste dans ton navigateur et n'est envoyé qu'à GitHub.</p>
+      <label class="champ">
+        <span>token GitHub</span>
+        <input type="password" id="champ-token" autocomplete="off" spellcheck="false" placeholder="github_pat_…">
+      </label>
+      <label class="case">
+        <input type="checkbox" id="case-durable"> rester connecté sur cet appareil
+      </label>
+      <p><button type="button" class="btn btn-principal" id="btn-connexion">se connecter</button></p>
+
+      <details>
+        <summary>Comment créer le token ?</summary>
+        <ol>
+          <li>Sur GitHub : <b>Settings → Developer settings → Personal access tokens → Fine-grained tokens → Generate new token</b>.</li>
+          <li><b>Repository access</b> : « Only select repositories », puis <code>bureau-des-projets</code>.</li>
+          <li><b>Permissions → Repository permissions → Contents</b> : « Read and write ».</li>
+          <li>Choisis une durée d'expiration, génère, copie le token et colle-le ci-dessus.</li>
+        </ol>
+        <p class="aide">Ne mets jamais ce token dans un fichier du site. Si tu le perds ou le soupçonnes d'être exposé, révoque-le sur GitHub et crées-en un autre.</p>
+      </details>
+    </section>
+
+    <!-- ============ 2. liste ============ -->
+    <section id="vue-liste" hidden>
+      <p class="actions">
+        <button type="button" class="btn btn-principal" id="btn-nouveau">+ nouveau billet</button>
+        <button type="button" class="btn" id="btn-deconnexion">se déconnecter</button>
+      </p>
+
+      <div id="bloc-brouillons" class="panneau" hidden>
+        <h3>Brouillons sur cet appareil</h3>
+        <ul id="liste-brouillons" class="liste-admin"></ul>
+      </div>
+
+      <div class="panneau">
+        <h3>Billets publiés</h3>
+        <ul id="liste-billets" class="liste-admin"></ul>
+      </div>
+    </section>
+
+    <!-- ============ 3. éditeur ============ -->
+    <section id="vue-editeur" hidden>
+      <p class="actions">
+        <button type="button" class="btn" id="btn-retour">← retour</button>
+      </p>
+
+      <div class="panneau">
+        <label class="champ">
+          <span>titre</span>
+          <input type="text" id="champ-titre" maxlength="140" autocomplete="off" placeholder="Le titre de ton billet">
+        </label>
+        <div class="deux-champs">
+          <label class="champ">
+            <span>date</span>
+            <input type="date" id="champ-date">
+          </label>
+          <label class="champ">
+            <span>adresse (slug)</span>
+            <input type="text" id="champ-slug" maxlength="60" autocomplete="off" spellcheck="false" placeholder="genere-depuis-le-titre">
+          </label>
+        </div>
+      </div>
+
+      <div class="onglets" role="tablist">
+        <button type="button" role="tab" id="onglet-ecrire" class="onglet actif">écrire</button>
+        <button type="button" role="tab" id="onglet-apercu" class="onglet">aperçu</button>
+      </div>
+
+      <div id="panneau-ecrire">
+        <div class="outils">
+          <div class="barre" id="barre" role="toolbar" aria-label="mise en forme">
+            <div class="groupe">
+              <button type="button" data-cmd="undo" title="Annuler">↶</button>
+              <button type="button" data-cmd="redo" title="Rétablir">↷</button>
+            </div>
+            <div class="groupe">
+              <button type="button" data-bloc="p" title="Paragraphe">Texte</button>
+              <button type="button" data-bloc="h3" title="Titre de section">Titre</button>
+              <button type="button" data-bloc="h4" title="Sous-titre">Sous-titre</button>
+              <button type="button" data-bloc="blockquote" title="Citation">Citation</button>
+            </div>
+            <div class="groupe">
+              <button type="button" data-cmd="bold" data-etat title="Gras (Ctrl+B)"><b>B</b></button>
+              <button type="button" data-cmd="italic" data-etat title="Italique (Ctrl+I)"><i>I</i></button>
+              <button type="button" data-cmd="underline" data-etat title="Souligné (Ctrl+U)"><u>U</u></button>
+              <button type="button" data-cmd="strikeThrough" data-etat title="Barré"><s>S</s></button>
+            </div>
+            <div class="groupe">
+              <button type="button" data-cmd="insertUnorderedList" data-etat title="Liste à puces">Liste</button>
+              <button type="button" data-cmd="insertOrderedList" data-etat title="Liste numérotée">1. 2.</button>
+            </div>
+            <div class="groupe">
+              <button type="button" data-align="" title="Aligner à gauche">Gauche</button>
+              <button type="button" data-align="ali-centre" title="Centrer">Centre</button>
+              <button type="button" data-align="ali-droite" title="Aligner à droite">Droite</button>
+            </div>
+            <div class="groupe">
+              <button type="button" data-action="lien" title="Ajouter un lien (Ctrl+K)">Lien</button>
+              <button type="button" data-cmd="unlink" title="Retirer le lien">Délier</button>
+              <button type="button" data-action="image" title="Insérer une image">Image</button>
+              <button type="button" data-cmd="insertHorizontalRule" title="Ligne de séparation">Séparateur</button>
+              <button type="button" data-cmd="removeFormat" title="Effacer la mise en forme du texte sélectionné">Nettoyer</button>
+            </div>
+          </div>
+
+          <div class="barre barre-image" id="barre-image" hidden>
+            <span class="etiquette">image</span>
+            <div class="groupe">
+              <button type="button" data-taille="taille-s">Petite</button>
+              <button type="button" data-taille="taille-m">Moyenne</button>
+              <button type="button" data-taille="taille-l">Grande</button>
+              <button type="button" data-taille="taille-xl">Pleine</button>
+            </div>
+            <div class="groupe">
+              <button type="button" data-aligne="ali-gauche">Gauche</button>
+              <button type="button" data-aligne="ali-centre">Centre</button>
+              <button type="button" data-aligne="ali-droite">Droite</button>
+            </div>
+            <div class="groupe">
+              <button type="button" data-img="alt" title="Description pour les lecteurs d'écran">Texte alt</button>
+              <button type="button" data-img="haut" title="Monter">↑</button>
+              <button type="button" data-img="bas" title="Descendre">↓</button>
+              <button type="button" data-img="supprimer" class="danger">Supprimer</button>
+            </div>
+          </div>
+        </div>
+
+        <input type="file" id="fichier-image" accept="image/png,image/jpeg,image/webp,image/gif" multiple hidden>
+        <div id="zone-ecriture" class="billet-corps zone-ecriture" contenteditable="true" spellcheck="true"></div>
+        <p class="aide" id="compteur"></p>
+      </div>
+
+      <div id="panneau-apercu" hidden>
+        <p class="aide">Aperçu avec le vrai style du site, tel que le billet sera publié.</p>
+        <iframe id="cadre-apercu" title="aperçu du billet"></iframe>
+      </div>
+
+      <p class="actions actions-fin">
+        <button type="button" class="btn btn-principal" id="btn-publier">publier</button>
+        <button type="button" class="btn" id="btn-brouillon">enregistrer le brouillon</button>
+        <span class="aide" id="info-brouillon"></span>
+      </p>
+    </section>
+
+  </main>
+
+</div>
+
+<script src="../commun.js"></script>
+<script src="github.js"></script>
+<script src="editeur.js"></script>
+<script src="app.js"></script>
+
+</body>
+</html>

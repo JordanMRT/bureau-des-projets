@@ -520,3 +520,64 @@ aside .bloc:hover{
   .header-droite{ display:none; }
   .header-menu-liste{ gap:20px; }
 }
+
+/* ==== contenu des billets (écrit avec l'éditeur de /admin) ==== */
+
+.billet-corps h3{
+  font-family:var(--titre), sans-serif;
+  font-weight:400;
+  font-size:1.5rem;
+  letter-spacing:0.02em;
+  text-transform:uppercase;
+  color:var(--accent);
+  margin:1.2em 0 0.3em;
+}
+.billet-corps h4{
+  font-family:var(--h1), sans-serif;
+  font-size:0.9rem;
+  letter-spacing:0.06em;
+  text-transform:uppercase;
+  color:var(--violet);
+  margin:1.2em 0 0.3em;
+}
+.billet-corps blockquote{
+  margin:1em 0;
+  padding:0.2em 1em;
+  border-left:3px solid var(--violet);
+  color:var(--muted);
+  font-style:italic;
+}
+.billet-corps ul,
+.billet-corps ol{ margin:0.6em 0; padding-left:1.4em; }
+.billet-corps hr{ border-top:1px dashed var(--border-soft); margin:1.4em 0; }
+.billet-corps .ali-centre{ text-align:center; }
+.billet-corps .ali-droite{ text-align:right; }
+
+.photo{ margin:1em 0; }
+.photo img{
+  display:block;
+  max-width:100%;
+  height:auto;
+  border:1px solid var(--border);
+  box-shadow:3px 4px 0 rgba(78, 43, 151, 0.12);
+}
+.photo figcaption{
+  margin-top:0.4rem;
+  font-size:0.8rem;
+  color:var(--muted);
+}
+.photo.taille-s img{ width:30%; }
+.photo.taille-m img{ width:45%; }
+.photo.taille-l img{ width:70%; }
+.photo.taille-xl img{ width:100%; }
+.photo.ali-gauche img{ margin-right:auto; }
+.photo.ali-centre img{ margin-left:auto; margin-right:auto; }
+.photo.ali-droite img{ margin-left:auto; }
+.photo.ali-centre figcaption{ text-align:center; }
+.photo.ali-droite figcaption{ text-align:right; }
+
+@media (max-width:680px){
+  .photo.taille-s img{ width:50%; }
+  .photo.taille-m img{ width:75%; }
+  .photo.taille-l img{ width:100%; }
+}
