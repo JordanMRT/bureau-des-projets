@@ -17,13 +17,13 @@
   const REPO = 'JordanMRT/bureau-des-projets';
   const PORTFOLIO_URL = 'https://jordanmrt.github.io/';
 
-  // Exposé pour les autres scripts du site (ex. l'éditeur de billets)
-  window.BUREAU = { BASE, REPO };
-
   // Configuration Supabase — à remplir avec tes vraies valeurs
   // (visibles dans Project Settings > API sur ton dashboard Supabase)
   const SUPABASE_URL = 'https://fdbycrkflickpcjcihwl.supabase.co'; // ex: 'https://xxxxxxxx.supabase.co'
   const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZkYnljcmtmbGlja3BjamNpaHdsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY1MjEyMjksImV4cCI6MjEwMjA5NzIyOX0.qNdWKplToaJJVHvFc2h0MpgJ9tQRab8vMPpUU4r8SCE'; // la clé "anon public", pas la service_role !
+
+  // Exposé pour les autres scripts du site (ex. l'éditeur de billets et le statut de /admin)
+  window.BUREAU = { BASE, REPO, SUPABASE_URL, SUPABASE_ANON_KEY };
 
   async function supabaseSelect(table) {
     if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return null;

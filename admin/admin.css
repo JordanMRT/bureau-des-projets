@@ -65,6 +65,7 @@
   cursor:pointer;
   transition:background 0.15s ease, color 0.15s ease;
 }
+a.btn, a.btn:visited{ text-decoration:none; }
 .btn:hover{ background:var(--violet); color:var(--bg); }
 .btn-principal{ background:var(--violet); color:#fff; }
 .btn-principal:hover{ background:var(--accent); border-color:var(--accent); }
@@ -106,6 +107,45 @@ code{ background:#fff; padding:0 0.25em; border:1px solid var(--border-soft); }
 .liste-admin .titre{ flex:1 1 14rem; font-weight:600; }
 .liste-admin .meta{ color:var(--muted); font-size:0.78rem; }
 .liste-admin .btn{ padding:0.15rem 0.7rem; font-size:0.78rem; }
+
+/* ---- statut du site : bascule en ligne / hors ligne ---- */
+
+.statut-actuel{ display:flex; align-items:center; gap:0.4rem; margin:0 0 0.8rem; }
+.bascule{ display:inline-flex; align-items:center; gap:0.7rem; margin-bottom:0.9rem; cursor:pointer; font-weight:700; }
+.bascule input{
+  position:absolute;
+  opacity:0;
+  width:1px;
+  height:1px;
+}
+.bascule .piste{
+  position:relative;
+  flex-shrink:0;
+  width:48px;
+  height:26px;
+  border:2px solid var(--border);
+  border-radius:999px;
+  background:#c9c5d8;
+  transition:background 0.15s ease;
+}
+.bascule .piste::after{
+  content:'';
+  position:absolute;
+  top:2px;
+  left:2px;
+  width:18px;
+  height:18px;
+  border-radius:50%;
+  background:#fff;
+  border:2px solid var(--border);
+  box-sizing:content-box;
+  transition:transform 0.15s ease;
+}
+.bascule input:checked + .piste{ background:var(--dot); }
+.bascule input:checked + .piste::after{ transform:translateX(22px); }
+.bascule input:focus-visible + .piste{ outline:2px solid var(--violet); outline-offset:2px; }
+.aide.erreur{ color:var(--accent); }
+.aide.ok{ color:var(--dot); }
 
 /* ---- onglets ---- */
 

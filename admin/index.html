@@ -51,6 +51,57 @@
         <button type="button" class="btn" id="btn-deconnexion">se déconnecter</button>
       </p>
 
+      <div class="panneau" id="panneau-statut">
+        <h3>Statut du site</h3>
+        <p class="statut-actuel">
+          <span class="dot" id="statut-actuel-point"></span><span id="statut-actuel-texte">chargement…</span>
+        </p>
+
+        <!-- connecté à Supabase : la bascule et la phrase -->
+        <div id="statut-connecte" hidden>
+          <label class="bascule">
+            <input type="checkbox" id="statut-online">
+            <span class="piste" aria-hidden="true"></span>
+            <span id="statut-etat">hors ligne</span>
+          </label>
+          <label class="champ">
+            <span>phrase courte (facultative)</span>
+            <input type="text" id="statut-phrase" maxlength="80" list="statut-recents" autocomplete="off" placeholder="ex. : en train de bidouiller le blog">
+          </label>
+          <datalist id="statut-recents"></datalist>
+          <p class="actions">
+            <button type="button" class="btn btn-principal" id="statut-enregistrer">enregistrer</button>
+            <button type="button" class="btn" id="statut-deconnexion">se déconnecter de Supabase</button>
+            <span class="aide" id="statut-compte"></span>
+          </p>
+        </div>
+
+        <!-- pas encore connecté à Supabase -->
+        <div id="statut-connexion" hidden>
+          <p class="aide">Pour changer le statut, connecte-toi avec ton compte Supabase (celui créé pour ça, pas ton token GitHub).</p>
+          <div class="deux-champs">
+            <label class="champ">
+              <span>email</span>
+              <input type="email" id="statut-email" autocomplete="username">
+            </label>
+            <label class="champ">
+              <span>mot de passe</span>
+              <input type="password" id="statut-mdp" autocomplete="current-password">
+            </label>
+          </div>
+          <label class="case">
+            <input type="checkbox" id="statut-durable"> rester connecté sur cet appareil
+          </label>
+          <p class="actions"><button type="button" class="btn btn-principal" id="statut-connexion-btn">se connecter</button></p>
+          <details>
+            <summary>Première configuration</summary>
+            <p class="aide">À faire une seule fois, dans le dashboard Supabase : créer ton compte (Authentication &gt; Users), fermer les inscriptions publiques, puis exécuter <code>0002_statut_ecriture.sql</code> avec ton email. Les étapes détaillées sont en commentaire dans ce fichier.</p>
+          </details>
+        </div>
+
+        <p class="aide" id="statut-msg" role="status"></p>
+      </div>
+
       <div id="bloc-brouillons" class="panneau" hidden>
         <h3>Brouillons sur cet appareil</h3>
         <ul id="liste-brouillons" class="liste-admin"></ul>
@@ -173,6 +224,7 @@
 <script src="../commun.js"></script>
 <script src="github.js"></script>
 <script src="editeur.js"></script>
+<script src="statut.js"></script>
 <script src="app.js"></script>
 
 </body>
