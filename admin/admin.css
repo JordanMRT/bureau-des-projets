@@ -5,7 +5,8 @@
 .wrap-admin{ grid-template-columns:minmax(0, 1fr); } /* minmax(0,…) : la barre d'outils défile au lieu d'élargir la page */
 .admin{ min-width:0; }
 .admin h2{ width:auto; }
-.admin h3{
+/* titres des panneaux uniquement : ne doit pas atteindre les titres de billets dans la zone d'écriture */
+.panneau > h3{
   font-family:var(--titre), sans-serif;
   font-weight:400;
   font-size:1.3rem;
@@ -200,6 +201,20 @@ code{ background:#fff; padding:0 0.25em; border:1px solid var(--border-soft); }
 .barre button.actif{ background:var(--violet); border-color:var(--violet); color:#fff; }
 .barre button.danger{ color:var(--accent); }
 .barre-image .etiquette{ flex-shrink:0; font-size:0.72rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:var(--violet); }
+
+/* icônes Lucide (SVG intégrés dans la page) */
+.icone{
+  display:block;
+  width:1.15rem;
+  height:1.15rem;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:2;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+/* le bouton "Titre" montre la police des titres de section */
+.barre [data-bloc="h3"]{ font-family:var(--logo), serif; font-size:0.95rem; }
 
 /* ---- zone d'écriture (même rendu que le billet publié) ---- */
 

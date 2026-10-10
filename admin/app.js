@@ -21,6 +21,7 @@
 
   function afficher(vue) {
     ['connexion', 'liste', 'editeur'].forEach(v => { $('vue-' + v).hidden = v !== vue; });
+    $('panneau-statut').hidden = vue === 'editeur'; // pas de statut pendant qu'on écrit : plus de place pour le texte
     window.scrollTo(0, 0);
   }
 

@@ -524,11 +524,10 @@ aside .bloc:hover{
 /* ==== contenu des billets (écrit avec l'éditeur de /admin) ==== */
 
 .billet-corps h3{
-  font-family:var(--titre), sans-serif;
+  font-family:var(--logo), serif;
   font-weight:400;
-  font-size:1.5rem;
-  letter-spacing:0.02em;
-  text-transform:uppercase;
+  font-size:1.6rem;
+  line-height:1.2;
   color:var(--accent);
   margin:1.2em 0 0.3em;
 }
@@ -558,8 +557,6 @@ aside .bloc:hover{
   display:block;
   max-width:100%;
   height:auto;
-  border:1px solid var(--border);
-  box-shadow:3px 4px 0 rgba(78, 43, 151, 0.12);
 }
 .photo figcaption{
   margin-top:0.4rem;
