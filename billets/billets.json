@@ -4,5 +4,11 @@
     "titre": "Hello World!",
     "date": "2026-08-12",
     "date_affichee": "12 août 2026"
+  },
+  {
+    "slug": "ceci-est-un-test",
+    "titre": "Ceci est un test",
+    "date": "2026-10-11",
+    "date_affichee": "11 octobre 2026"
   }
 ]
