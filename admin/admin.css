@@ -223,6 +223,9 @@ code{ background:#fff; padding:0 0.25em; border:1px solid var(--border-soft); }
 .zone-ecriture figcaption:empty::before{ content:'Ajouter une légende…'; color:var(--border-soft); }
 .zone-ecriture figcaption:focus{ outline:1px dashed var(--violet); }
 
+/* l'image choisie pour l'aperçu de partage est entourée dans l'éditeur (rien sur le site publié) */
+.zone-ecriture figure.partage img{ outline:3px solid var(--violet); outline-offset:2px; }
+
 /* ---- aperçu ---- */
 
 #cadre-apercu{
@@ -235,3 +238,30 @@ code{ background:#fff; padding:0 0.25em; border:1px solid var(--border-soft); }
 @media (max-width:680px){
   .deux-champs{ grid-template-columns:1fr; }
 }
+
+/* ---- correction en direct (LanguageTool) ---- */
+
+/* soulignements dessinés par le navigateur, sans toucher au contenu de l'éditeur */
+::highlight(lt-ortho){ text-decoration:underline wavy #e8002f; text-underline-offset:3px; }
+::highlight(lt-gram){  text-decoration:underline wavy #4E2B97; text-underline-offset:3px; }
+::highlight(lt-typo){  text-decoration:underline wavy #c27c0e; text-underline-offset:3px; }
+::highlight(lt-style){ text-decoration:underline dotted #6b6785; text-underline-offset:3px; }
+
+.correcteur{ display:flex; flex-wrap:wrap; align-items:center; gap:0.4rem 1rem; margin-top:0.6rem; }
+.correcteur .case{ margin:0; font-weight:700; }
+.correcteur .btn{ padding:0.15rem 0.7rem; font-size:0.78rem; }
+
+.bulle-correction{
+  position:fixed;
+  z-index:20;
+  max-width:min(340px, calc(100vw - 16px));
+  padding:0.6rem 0.7rem;
+  border:1px solid var(--border);
+  background:#fff;
+  box-shadow:4px 5px 0 rgba(78, 43, 151, 0.18);
+  font-family:var(--h1), sans-serif;
+  font-size:0.85rem;
+}
+.bulle-correction .bulle-message{ margin:0 0 0.5rem; }
+.bulle-correction .bulle-suggestions{ display:flex; flex-wrap:wrap; gap:0.3rem; margin-bottom:0.5rem; }
+.bulle-correction .btn{ padding:0.15rem 0.7rem; font-size:0.8rem; }

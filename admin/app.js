@@ -21,6 +21,7 @@
 
   function afficher(vue) {
     ['connexion', 'liste', 'editeur'].forEach(v => { $('vue-' + v).hidden = v !== vue; });
+    if (vue !== 'editeur') Correcteur.effacer();
     $('panneau-statut').hidden = vue === 'editeur'; // pas de statut pendant qu'on écrit : plus de place pour le texte
     window.scrollTo(0, 0);
   }
@@ -169,10 +170,12 @@
     $('champ-slug').value = donnees.slug || '';
     $('champ-slug').disabled = !!courant.slug; // l'adresse d'un billet publié ne change pas
     Editeur.charger(donnees.html || '');
+    Correcteur.rafraichir();
     $('info-brouillon').textContent = '';
     modifie = false;
     afficherOnglet('ecrire');
     majCompteur();
+    majPartage();
     dire('');
     afficher('editeur');
     $('champ-titre').focus();
@@ -212,6 +215,23 @@
     }
   }
 
+  // dit d'où viendra l'image d'aperçu quand le billet sera partagé
+  function majPartage() {
+    const info = $('info-partage');
+    const zone = $('zone-ecriture');
+    const choisie = zone.querySelector('figure.partage img');
+    const img = choisie || zone.querySelector('figure img');
+    if (!img) { info.textContent = 'Aperçu de partage : pas d\'image dans le billet, seul le titre sera affiché.'; return; }
+    const ecrire = () => {
+      const ratio = img.naturalWidth / img.naturalHeight;
+      info.textContent = 'Aperçu de partage : ' + (choisie
+        ? 'l\'image entourée en violet.'
+        : 'la première image (pour en choisir une autre : sélectionne-la, puis « Image de partage »).')
+        + (ratio && ratio < 1.3 ? ' Elle est plutôt haute : les réseaux la recadreront au centre, un format paysage rend mieux.' : '');
+    };
+    if (img.complete && img.naturalWidth) ecrire(); else img.addEventListener('load', ecrire, { once: true });
+  }
+
   function majCompteur() {
     const { mots, minutes } = Editeur.stats();
     $('compteur').textContent = mots ? `${mots} mot${mots > 1 ? 's' : ''} · environ ${minutes} min de lecture` : '';
@@ -224,9 +244,77 @@
     $('onglet-apercu').classList.toggle('actif', nom === 'apercu');
   }
 
+  // ---------- aperçu de partage (Twitter/X, etc.) : description et image du billet ----------
+
+  // coupe proprement un texte à `max` caractères, sur une fin de mot
+  function couper(texte, max) {
+    if (texte.length <= max) return texte;
+    const morceau = texte.slice(0, max - 1);
+    const espace = morceau.lastIndexOf(' ');
+    return (espace > max * 0.6 ? morceau.slice(0, espace) : morceau).replace(/[\s,;:.!?-]+$/, '') + '…';
+  }
+
+  // description = début du texte ; image = celle marquée « de partage », sinon la première
+  function infosPartage(html) {
+    const doc = new DOMParser().parseFromString('<body>' + html, 'text/html');
+    let texte = '';
+    for (const p of doc.body.querySelectorAll('p')) {
+      const t = p.textContent.replace(/\s+/g, ' ').trim();
+      if (t) texte += (texte ? ' ' : '') + t;
+      if (texte.length >= 120) break;
+    }
+    const img = doc.body.querySelector('figure.partage img') || doc.body.querySelector('figure img');
+    return {
+      description: couper(texte, 160) || 'Un billet du bureau des projets de Jordan.',
+      image: img ? { src: img.getAttribute('src') || '', alt: img.getAttribute('alt') || '' } : null,
+    };
+  }
+
+  // balises lues par Twitter/X, Facebook, LinkedIn, Discord, iMessage… pour fabriquer l'aperçu d'un lien.
+  // Elles doivent être dans le HTML lui-même : ces robots n'exécutent pas de JavaScript.
+  function ajouterMetasPartage(doc, { titre, slug, date, description, image }) {
+    doc.head.querySelectorAll('meta[property^="og:"], meta[property^="article:"], meta[name="twitter:card"], meta[name="description"], link[rel="canonical"]')
+      .forEach(e => e.remove());
+
+    const racine = window.BUREAU.SITE_URL;
+    const url = slug ? `${racine}billets/${encodeURIComponent(slug)}.html` : '';
+    const imageUrl = image && image.src && !image.src.startsWith('data:') ? new URL(image.src, racine + 'billets/').href : '';
+
+    const lignes = [
+      ['name', 'description', description],
+      ['property', 'og:type', 'article'],
+      ['property', 'og:site_name', 'bureau des projets'],
+      ['property', 'og:locale', 'fr_FR'],
+      ['property', 'og:title', titre],
+      ['property', 'og:description', description],
+      url && ['property', 'og:url', url],
+      imageUrl && ['property', 'og:image', imageUrl],
+      imageUrl && ['property', 'og:image:alt', image.alt || titre],
+      date && ['property', 'article:published_time', date],
+      ['name', 'twitter:card', imageUrl ? 'summary_large_image' : 'summary'],
+    ].filter(Boolean);
+
+    const noeuds = [];
+    lignes.forEach(([attribut, nom, contenu]) => {
+      const m = doc.createElement('meta');
+      m.setAttribute(attribut, nom);
+      m.setAttribute('content', contenu);
+      noeuds.push(m);
+    });
+    if (url) {
+      const canonique = doc.createElement('link');
+      canonique.setAttribute('rel', 'canonical');
+      canonique.setAttribute('href', url);
+      noeuds.push(canonique);
+    }
+    const fragment = doc.createDocumentFragment();
+    noeuds.forEach(n => { fragment.appendChild(doc.createTextNode('\n')); fragment.appendChild(n); });
+    doc.querySelector('title').after(fragment);
+  }
+
   // ---------- fabrication de la page d'un billet à partir de TEMPLATE.html ----------
 
-  function construirePage(gabarit, { titre, dateAffichee, corps, base }) {
+  function construirePage(gabarit, { titre, dateAffichee, corps, base, slug, date, description, image }) {
     const doc = new DOMParser().parseFromString(gabarit, 'text/html');
 
     const commentaires = [];
@@ -240,6 +328,8 @@
     const zone = doc.querySelector('.billet-corps');
     const indente = corps.split('\n').map(l => '      ' + l).join('\n');
     zone.innerHTML = `\n${indente}\n    `;
+
+    if (description !== undefined) ajouterMetasPartage(doc, { titre, slug, date, description, image });
 
     if (base) {
       const b = doc.createElement('base');
@@ -272,6 +362,9 @@
         dateAffichee: formaterDate(date),
         corps: Editeur.exporter(false).html,
         base: new URL('../billets/', location.href).href,
+        slug: $('champ-slug').value.trim(),
+        date,
+        ...infosPartage(Editeur.exporter(false).html),
       });
     } catch (e) {
       dire('Aperçu impossible : ' + e.message, 'erreur');
@@ -318,7 +411,7 @@
 
           return {
             ecrire: [
-              { chemin: `billets/${slug}.html`, texte: construirePage(gabarit, { titre, dateAffichee, corps: html }) },
+              { chemin: `billets/${slug}.html`, texte: construirePage(gabarit, { titre, dateAffichee, corps: html, slug, date, ...infosPartage(html) }) },
               { chemin: 'billets/billets.json', texte: JSON.stringify(liste, null, 2) + '\n' },
               ...images.map(img => ({ chemin: img.fichier, base64: img.base64 })),
             ],
@@ -409,11 +502,12 @@
     const barreImage = $('barre-image');
     Editeur.init($('zone-ecriture'), {
       barre,
-      onChange: () => { majCompteur(); programmerSauvegarde(); },
+      onChange: () => { majCompteur(); majPartage(); programmerSauvegarde(); },
       onStatut: (texte, type) => dire(texte, type),
       onFigure: figure => {
         barreImage.hidden = !figure;
         if (!figure) return;
+        barreImage.querySelector('[data-img="partage"]').classList.toggle('actif', figure.classList.contains('partage'));
         barreImage.querySelectorAll('[data-taille]').forEach(b => b.classList.toggle('actif', figure.classList.contains(b.dataset.taille)));
         barreImage.querySelectorAll('[data-aligne]').forEach(b => b.classList.toggle('actif', figure.classList.contains(b.dataset.aligne)));
       },
@@ -437,6 +531,7 @@
       if (!b) return;
       if (b.dataset.taille) Editeur.reglerFigure('taille', b.dataset.taille);
       else if (b.dataset.aligne) Editeur.reglerFigure('align', b.dataset.aligne);
+      else if (b.dataset.img === 'partage') Editeur.definirPartage();
       else if (b.dataset.img === 'alt') Editeur.texteAlternatif();
       else if (b.dataset.img === 'haut') Editeur.deplacerFigure(-1);
       else if (b.dataset.img === 'bas') Editeur.deplacerFigure(1);
@@ -462,6 +557,7 @@
   // ---------- démarrage ----------
 
   brancher();
+  Correcteur.init($('zone-ecriture'));
   const tokenMemorise = Github.recupererToken();
   if (tokenMemorise) demarrer(tokenMemorise);
   else afficher('connexion');

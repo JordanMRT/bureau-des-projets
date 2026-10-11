@@ -194,6 +194,7 @@
               <button type="button" data-aligne="ali-droite">Droite</button>
             </div>
             <div class="groupe">
+              <button type="button" data-img="partage" title="Utiliser cette image comme aperçu quand le billet est partagé (Twitter/X, etc.)">Image de partage</button>
               <button type="button" data-img="alt" title="Description pour les lecteurs d'écran">Texte alt</button>
               <button type="button" data-img="haut" title="Monter">↑</button>
               <button type="button" data-img="bas" title="Descendre">↓</button>
@@ -203,7 +204,22 @@
         </div>
 
         <input type="file" id="fichier-image" accept="image/png,image/jpeg,image/webp,image/gif" multiple hidden>
-        <div id="zone-ecriture" class="billet-corps zone-ecriture" contenteditable="true" spellcheck="true"></div>
+        <div id="zone-ecriture" class="billet-corps zone-ecriture" lang="fr" contenteditable="true" spellcheck="true"></div>
+
+        <div class="correcteur">
+          <label class="case">
+            <input type="checkbox" id="correcteur-actif"> correction en direct
+          </label>
+          <span class="aide" id="correcteur-etat" role="status"></span>
+          <button type="button" class="btn" id="correcteur-suivante" hidden>faute suivante</button>
+        </div>
+        <p class="aide">
+          Orthographe, grammaire, conjugaison et typographie par
+          <a href="https://languagetool.org" target="_blank" rel="noopener">LanguageTool</a>.
+          Le texte du billet est envoyé à ce service tiers, en HTTPS, pendant les pauses de frappe.
+          <a href="https://languagetool.org/privacy" target="_blank" rel="noopener">Confidentialité</a>
+        </p>
+        <div id="correcteur-bulle" class="bulle-correction" role="dialog" aria-label="suggestion de correction" hidden></div>
         <p class="aide" id="compteur"></p>
       </div>
 
@@ -211,6 +227,8 @@
         <p class="aide">Aperçu avec le vrai style du site, tel que le billet sera publié.</p>
         <iframe id="cadre-apercu" title="aperçu du billet"></iframe>
       </div>
+
+      <p class="aide" id="info-partage"></p>
 
       <p class="actions actions-fin">
         <button type="button" class="btn btn-principal" id="btn-publier">publier</button>
@@ -227,6 +245,7 @@
 <script src="github.js"></script>
 <script src="editeur.js"></script>
 <script src="statut.js"></script>
+<script src="correcteur.js"></script>
 <script src="app.js"></script>
 
 </body>

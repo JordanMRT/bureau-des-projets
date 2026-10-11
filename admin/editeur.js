@@ -125,7 +125,8 @@
         const classes = (noeud.getAttribute('class') || '').split(/\s+/);
         const taille = TAILLES.find(t => classes.includes(t)) || 'taille-m';
         const align = ALIGN_FIGURE.find(a => classes.includes(a)) || 'ali-gauche';
-        el.className = `photo ${taille} ${align}`;
+        // « partage » = image choisie comme aperçu sur les réseaux (aucun effet visuel sur le site)
+        el.className = `photo ${taille} ${align}${classes.includes('partage') ? ' partage' : ''}`;
       }
 
       convertir(noeud, el, doc, options);
@@ -516,6 +517,17 @@
       const liste = type === 'taille' ? TAILLES : ALIGN_FIGURE;
       f.classList.remove(...liste);
       f.classList.add(valeur);
+      this.prevenir();
+      if (this.options.onFigure) this.options.onFigure(f);
+    },
+
+    // marque l'image choisie comme aperçu de partage (une seule à la fois) ; un second clic retire le choix
+    definirPartage() {
+      const f = this.figureChoisie;
+      if (!f) return;
+      const dejaChoisie = f.classList.contains('partage');
+      this.zone.querySelectorAll('figure.partage').forEach(x => x.classList.remove('partage'));
+      if (!dejaChoisie) f.classList.add('partage');
       this.prevenir();
       if (this.options.onFigure) this.options.onFigure(f);
     },
