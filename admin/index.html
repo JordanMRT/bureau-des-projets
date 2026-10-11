@@ -194,7 +194,7 @@
               <button type="button" data-aligne="ali-droite">Droite</button>
             </div>
             <div class="groupe">
-              <button type="button" data-img="partage" title="Utiliser cette image comme aperçu quand le billet est partagé (Twitter/X, etc.)">Image de partage</button>
+              <button type="button" data-img="partage" title="Utiliser cette image comme aperçu quand le billet est partagé (Twitter/X, etc.). Par défaut, c'est la première image du billet. Un second clic revient au choix automatique.">Image de partage</button>
               <button type="button" data-img="alt" title="Description pour les lecteurs d'écran">Texte alt</button>
               <button type="button" data-img="haut" title="Monter">↑</button>
               <button type="button" data-img="bas" title="Descendre">↓</button>
@@ -210,15 +210,15 @@
           <label class="case">
             <input type="checkbox" id="correcteur-actif"> correction en direct
           </label>
+          <span class="aide credit">
+            par <a href="https://languagetool.org" target="_blank" rel="noopener">LanguageTool</a>
+            <a class="info" href="https://languagetool.org/privacy" target="_blank" rel="noopener"
+               title="Orthographe, grammaire, conjugaison et typographie. Le texte du billet est envoyé à ce service tiers, en HTTPS, pendant les pauses de frappe. Voir sa politique de confidentialité."
+               aria-label="Confidentialité : le texte du billet est envoyé à LanguageTool"><svg class="icone" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10" /> <path d="M12 16v-4" /> <path d="M12 8h.01" /></svg></a>
+          </span>
           <span class="aide" id="correcteur-etat" role="status"></span>
           <button type="button" class="btn" id="correcteur-suivante" hidden>faute suivante</button>
         </div>
-        <p class="aide">
-          Orthographe, grammaire, conjugaison et typographie par
-          <a href="https://languagetool.org" target="_blank" rel="noopener">LanguageTool</a>.
-          Le texte du billet est envoyé à ce service tiers, en HTTPS, pendant les pauses de frappe.
-          <a href="https://languagetool.org/privacy" target="_blank" rel="noopener">Confidentialité</a>
-        </p>
         <div id="correcteur-bulle" class="bulle-correction" role="dialog" aria-label="suggestion de correction" hidden></div>
         <p class="aide" id="compteur"></p>
       </div>
@@ -228,7 +228,7 @@
         <iframe id="cadre-apercu" title="aperçu du billet"></iframe>
       </div>
 
-      <p class="aide" id="info-partage"></p>
+      <p class="aide" id="info-partage" hidden></p>
 
       <p class="actions actions-fin">
         <button type="button" class="btn btn-principal" id="btn-publier">publier</button>

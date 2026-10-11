@@ -215,21 +215,22 @@
     }
   }
 
-  // dit d'où viendra l'image d'aperçu quand le billet sera partagé
+  // n'affiche rien, sauf si l'image d'aperçu de partage risque d'être mal recadrée
   function majPartage() {
     const info = $('info-partage');
     const zone = $('zone-ecriture');
-    const choisie = zone.querySelector('figure.partage img');
-    const img = choisie || zone.querySelector('figure img');
-    if (!img) { info.textContent = 'Aperçu de partage : pas d\'image dans le billet, seul le titre sera affiché.'; return; }
-    const ecrire = () => {
+    const img = zone.querySelector('figure.partage img') || zone.querySelector('figure img');
+    info.hidden = true;
+    info.textContent = '';
+    if (!img) return;
+    const verifier = () => {
       const ratio = img.naturalWidth / img.naturalHeight;
-      info.textContent = 'Aperçu de partage : ' + (choisie
-        ? 'l\'image entourée en violet.'
-        : 'la première image (pour en choisir une autre : sélectionne-la, puis « Image de partage »).')
-        + (ratio && ratio < 1.3 ? ' Elle est plutôt haute : les réseaux la recadreront au centre, un format paysage rend mieux.' : '');
+      if (ratio && ratio < 1.3) {
+        info.textContent = 'L\'image de partage est plutôt haute : elle sera recadrée au centre sur les réseaux.';
+        info.hidden = false;
+      }
     };
-    if (img.complete && img.naturalWidth) ecrire(); else img.addEventListener('load', ecrire, { once: true });
+    if (img.complete && img.naturalWidth) verifier(); else img.addEventListener('load', verifier, { once: true });
   }
 
   function majCompteur() {

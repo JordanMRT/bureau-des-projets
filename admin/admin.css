@@ -250,6 +250,9 @@ code{ background:#fff; padding:0 0.25em; border:1px solid var(--border-soft); }
 .correcteur{ display:flex; flex-wrap:wrap; align-items:center; gap:0.4rem 1rem; margin-top:0.6rem; }
 .correcteur .case{ margin:0; font-weight:700; }
 .correcteur .btn{ padding:0.15rem 0.7rem; font-size:0.78rem; }
+.correcteur .credit{ display:inline-flex; align-items:center; gap:0.3rem; margin:0; }
+.correcteur .info{ display:inline-flex; color:var(--muted); }
+.correcteur .info .icone{ width:0.95rem; height:0.95rem; }
 
 .bulle-correction{
   position:fixed;
