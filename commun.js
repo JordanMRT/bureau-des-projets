@@ -269,5 +269,41 @@
       renard.addEventListener('mouseenter', () => bulle.classList.add('visible'));
       renard.addEventListener('mouseleave', () => bulle.classList.remove('visible'));
     }
+
+    // ---- bannière "aucun cookie" : une seule fois par session (pas sur /admin) ----
+    // Le drapeau est gardé dans sessionStorage (ce n'est pas un cookie, il reste dans le
+    // navigateur et disparaît à la fermeture de l'onglet) : la bannière revient donc à la
+    // prochaine visite, mais pas en naviguant d'une page à l'autre pendant la même session.
+    if (!location.pathname.includes('/admin/')) {
+      const CLE_BANNIERE = 'bureau-banniere-cookies';
+      let dejaVue = false;
+      try {
+        dejaVue = !!sessionStorage.getItem(CLE_BANNIERE);
+        if (!dejaVue) sessionStorage.setItem(CLE_BANNIERE, '1');
+      } catch {
+        // stockage indisponible (navigation privée stricte, etc.) : on affiche quand même
+      }
+
+      if (!dejaVue) {
+        const banniere = document.createElement('div');
+        banniere.className = 'banniere-cookies';
+        banniere.setAttribute('role', 'status');
+        banniere.innerHTML = `
+          <p>Ce site ne collecte <b>aucun cookie</b>.</p>
+          <button class="banniere-fermer" type="button" aria-label="fermer ce message">
+            <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+          </button>
+        `;
+        document.body.appendChild(banniere);
+
+        // petit délai pour que l'animation d'arrivée soit visible, une fois la page posée
+        setTimeout(() => banniere.classList.add('visible'), 900);
+
+        banniere.querySelector('.banniere-fermer').addEventListener('click', () => {
+          banniere.classList.remove('visible');
+          setTimeout(() => banniere.remove(), 700);
+        });
+      }
+    }
   });
 })();

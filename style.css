@@ -578,3 +578,63 @@ aside .bloc:hover{
   .photo.taille-m img{ width:75%; }
   .photo.taille-l img{ width:100%; }
 }
+
+/* ==== bannière "aucun cookie" (injectée par commun.js) ==== */
+
+.banniere-cookies{
+  position:fixed;
+  left:50%;
+  bottom:20px;
+  z-index:50;
+  box-sizing:border-box;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  width:max-content;
+  max-width:calc(100% - 32px);
+  padding:8px 8px 8px 16px;
+  background:var(--card-bg);
+  border:1px solid var(--border);
+  box-shadow:3px 4px 0 rgba(78, 43, 151, 0.12);
+  font-family:var(--h1), sans-serif;
+  font-size:0.82rem;
+  color:var(--text);
+  opacity:0;
+  transform:translate(-50%, 24px);
+  transition:opacity 0.6s ease, transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+  pointer-events:none;
+}
+.banniere-cookies.visible{
+  opacity:1;
+  transform:translate(-50%, 0);
+  pointer-events:auto;
+}
+.banniere-cookies p{ margin:0; line-height:1.35; }
+.banniere-cookies b{ color:var(--accent); }
+
+.banniere-fermer{
+  flex-shrink:0;
+  display:grid;
+  place-items:center;
+  width:26px;
+  height:26px;
+  padding:0;
+  background:none;
+  border:2px solid var(--violet);
+  border-radius:50%;
+  color:var(--violet);
+  cursor:pointer;
+  transition:background 0.15s ease, color 0.15s ease;
+}
+.banniere-fermer:hover,
+.banniere-fermer:focus-visible{
+  background:var(--violet);
+  color:var(--bg);
+}
+
+@media (max-width:680px){
+  .banniere-cookies{ bottom:14px; }
+}
+@media (prefers-reduced-motion: reduce){
+  .banniere-cookies{ transform:translate(-50%, 0); transition:opacity 0.2s ease; }
+}
