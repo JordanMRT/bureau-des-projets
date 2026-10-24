@@ -4,5 +4,11 @@
     "titre": "Hello World!",
     "date": "2026-08-12",
     "date_affichee": "12 août 2026"
+  },
+  {
+    "slug": "petit-manuel-pour-tenir-en-ces-temps-incertains",
+    "titre": "Petit manuel pour tenir en ces temps incertains",
+    "date": "2026-10-24",
+    "date_affichee": "24 octobre 2026"
   }
 ]
